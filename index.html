@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encanto Nail Designer</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #fff0f8 0%, #ffe6f2 100%);
+            background-image: 
+                radial-gradient(#ffb3d9 1px, transparent 1px),
+                radial-gradient(#ffb3d9 1px, transparent 1px);
+            background-size: 25px 25px;
+            background-position: 0 0, 12.5px 12.5px;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 1rem;
+        }
+        .cartaz {
+            max-width: 450px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 24px;
+            border: 3px solid #ff99cc;
+            overflow: hidden;
+        }
+        .banner-topo {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
+        }
+        .banner-topo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ✅ CAIXA DE BOAS-VINDAS — CURIOSIDADE */
+        .caixa-boas-vindas {
+            background: linear-gradient(135deg, #fff0f8, #ffe6f2);
+            border: 2px solid #ff99cc;
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .caixa-boas-vindas.oculta { display: none; }
+        .caixa-boas-vindas h4 {
+            color: #ff66b2;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .caixa-boas-vindas p {
+            color: #b34782;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+        .campo-nome {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ff99cc;
+            border-radius: 12px;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 0.6rem;
+            outline: none;
+        }
+        .btn-salvar-nome {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-salvar-nome:hover { transform: scale(1.05); }
+        .btn-depois {
+            background: transparent;
+            border: none;
+            color: #b34782;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .mensagem-retorno {
+            color: #993366;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem;
+        }
+
+        .botao-chat-topo { text-align: center; margin: 0.8rem 0; }
+        .botao-chat-topo a {
+            display: inline-block;
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .coracao { color: #ff66b2; }
+        .conteudo-interno { padding: 0 1.5rem 1.5rem; }
+        .titulo { text-align: center; margin-bottom: 0.5rem; }
+        .titulo-principal {
+            font-size: 2.5rem;
+            color: #ff66b2;
+            font-family: Georgia, serif;
+            font-style: italic;
+        }
+        .titulo-sub { font-size: 1.4rem; font-family: cursive; color: #222; }
+        .sub-titulo { text-align: center; color: #b34782; letter-spacing: 2px; margin: 0.5rem 0 1rem; }
+        .faixa-destaque {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-weight: bold;
+            display: inline-block;
+            position: relative;
+            left: 50%; transform: translateX(-50%);
+            margin-bottom: 1rem;
+        }
+
+        .galeria-titulo {
+            text-align: center;
+            margin: 1.5rem 0 1rem;
+        }
+        .galeria-titulo h3 {
+            color: #ff66b2;
+            font-size: 1.6rem;
+            font-family: Georgia, serif;
+            font-style: italic;
+        }
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0 2rem;
+        }
+        .item-trabalho {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .item-trabalho img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 2px solid #ffd9e6;
+        }
+        .nome-trabalho {
+            margin-top: 0.5rem;
+            color: #993366;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .caixa-servicos {
+            border: 2px solid #ff99cc; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fff;
+        }
+        .servico { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; }
+        .servico-nome { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: #993366; font-size: 1.1rem; }
+        .preco-circulo {
+            width: 70px; height: 70px; border: 2px solid #ff99cc; border-radius: 50%;
+            background: #ffe6f2; display: flex; align-items: center; justify-content: center;
+            color: #d63384; font-weight: bold;
+        }
+        .acrescimo { font-size: 0.9rem; color: #b34782; margin-left: 1.8rem; margin-top: -0.3rem; }
+        .area-contato { display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0; gap: 1rem; }
+        .img-baixo {
+            width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid #ff99cc; flex-shrink: 0;
+        }
+        .img-baixo img { width: 100%; height: 100%; object-fit: cover; }
+        .botao-wpp { flex: 1; }
+        .botao-wpp a {
+            display: block; background: linear-gradient(90deg, #25D366, #128C7E); color: white;
+            padding: 1rem; border-radius: 50px; font-weight: bold; text-decoration: none; text-align: center;
+        }
+        .destaques { display: flex; justify-content: space-around; text-align: center; margin: 1.5rem 0; color: #993366; font-size: 0.95rem; }
+        .em-breve { border: 2px dashed #ff99cc; border-radius: 16px; padding: 1.2rem; text-align: center; color: #b34782; margin-bottom: 1rem; }
+        .rodape { text-align: center; color: #b34782; font-size: 0.9rem; margin-bottom: 1rem; }
+        .botao-acesso-total { text-align: center; margin-top: 1rem; }
+        .botao-acesso-total a {
+            display: inline-block; background: linear-gradient(90deg, #993366, #b34782);
+            color: white; padding: 0.6rem 2.5rem; border-radius: 50px; font-weight: bold; text-decoration: none;
+        }
+        
+        @media (max-width: 380px) {
+            .galeria { grid-template-columns: 1fr; }
+            .item-trabalho img { height: 160px; }
+            .titulo-principal { font-size: 2rem; }
+            .banner-topo { height: 260px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cartaz">
+        <div class="banner-topo">
+            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
+        </div>
+        <div class="conteudo-interno">
+            <div class="botao-chat-topo">
+                <a href="chat.html">💬 Chat, vem bater um papo 😃</a>
+            </div>
+            <div class="titulo">
+                <h1 class="titulo-principal">Encanto</h1>
+                <h2 class="titulo-sub">Nail Designer</h2>
+                <p class="sub-titulo"><span class="coracao">♥</span> ESTÚDIO DE UNHAS <span class="coracao">♥</span></p>
+            </div>
+            <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
+
+            <!-- ✅ CAIXA DE CURIOSIDADE — AQUI ACONTECE A MAGIA! -->
+            <div class="caixa-boas-vindas" id="caixaNome">
+                <div id="pedirNome">
+                    <h4>💫 Olá! Que bom que você veio!</h4>
+                    <p>Temos algo especial para te contar...<br>Mas antes, como gostaria de ser chamada? 💖</p>
+                    <input type="text" id="campoNome" class="campo-nome" placeholder="Digite seu nome aqui ✨">
+                    <button onclick="salvarNome()" class="btn-salvar-nome">Enviar 💌</button>
+                    <br>
+                    <button onclick="fecharCaixa()" class="btn-depois">Depois, obrigada 😊</button>
+                </div>
+                <div id="mensagemBoasVindas" class="mensagem-retorno" style="display: none;">
+                    💖 Que alegria ter você aqui, <span id="nomePessoa"></span>! 💖
+                </div>
+            </div>
+
+            <!-- ✅ GALERIA -->
+            <div class="galeria-titulo">
+                <h3>✨ Nossos Trabalhos ✨</h3>
+                <p class="sub-titulo">Cada detalhe feito com carinho 💖</p>
+            </div>
+            <div class="galeria">
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" alt="Francesa Branca com Brilho" loading="lazy">
+                    <p class="nome-trabalho">💎 Francesa Branca</p>
+                </div>
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" alt="Nude em Gel" loading="lazy">
+                    <p class="nome-trabalho">💅 Nude em Gel</p>
+                </div>
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" alt="Preto & Dourado" loading="lazy">
+                    <p class="nome-trabalho">✨ Preto & Dourado</p>
+                </div>
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-prata.webp" alt="Preto & Prata" loading="lazy">
+                    <p class="nome-trabalho">🖤 Preto & Prata</p>
+                </div>
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rosa-prata.webp" alt="Rosa Mármore Brilhante" loading="lazy">
+                    <p class="nome-trabalho">💖 Rosa Mármore</p>
+                </div>
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rose-brilho.webp" alt="Rosa Suave Brilhante" loading="lazy">
+                    <p class="nome-trabalho">🌸 Rosa Suave</p>
+                </div>
+            </div>
+
+            <div class="caixa-servicos">
+                <div class="servico">
+                    <div class="servico-nome"><span class="coracao">♥</span> Unhas Longas</div>
+                    <div class="preco-circulo">A definir</div>
+                </div>
+                <div class="servico">
+                    <div class="servico-nome"><span class="coracao">♥</span> Unhas Curtas</div>
+                    <div class="preco-circulo">A definir</div>
+                </div>
+                <div class="servico">
+                    <div class="servico-nome"><span class="coracao">♥</span> 3D & Brilhos</div>
+                    <div class="preco-circulo">+A definir</div>
+                </div>
+                <p class="acrescimo">ACRÉSCIMO</p>
+            </div>
+            <div class="area-contato">
+                <div class="img-baixo">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
+                </div>
+                <div class="botao-wpp">
+                    <a href="https://wa.me/553173449910" target="_blank">
+                        💬 WhatsApp<br><small>apenas para emergência 🚨</small>
+                    </a>
+                </div>
+            </div>
+            <div class="destaques">
+                <div><span class="coracao">♥</span> Exclusividade</div>
+                <div><span class="coracao">♥</span> Qualidade</div>
+                <div><span class="coracao">♥</span> Amor</div>
+            </div>
+            <div class="em-breve">
+                <p>📸 Novidades em breve</p>
+                <p>⏰ Horários — em atualização</p>
+            </div>
+            <p class="rodape">💖 Agradecemos sua preferência 💖</p>
+            <div class="botao-acesso-total">
+                <a href="gerenciar.html">🔐 Área administrativa 🔐</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
+        const CHAVE_ID = "idVisitante_encanto";
+        const CHAVE_NOME = "nome_visitante_encanto";
+        const CHAVE_SESSAO_ATIVA = "sessao_ativa_encanto";
+
+        function gerarIdUnico() {
+            const p1 = Math.random().toString(36).slice(2, 6);
+            const p2 = Math.random().toString(36).slice(2, 6);
+            return `usr_${p1}${p2}`;
+        }
+
+        let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
+        if (!ID_VISITANTE) {
+            ID_VISITANTE = gerarIdUnico();
+            localStorage.setItem(CHAVE_ID, ID_VISITANTE);
+        }
+
+        function dataAtual() {
+            return new Date().toLocaleString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
+            authDomain: "willobras.firebaseapp.com",
+            databaseURL: "https://willobras-default-rtdb.firebaseio.com",
+            projectId: "willobras",
+            storageBucket: "willobras.firebasestorage.app",
+            messagingSenderId: "66370500400",
+            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function ehNovaSessao() {
+            if (!sessionStorage.getItem(CHAVE_SESSAO_ATIVA)) {
+                sessionStorage.setItem(CHAVE_SESSAO_ATIVA, 'sim');
+                return true;
+            }
+            return false;
+        }
+
+        // ✅ Salvar nome no Firebase
+        async function salvarNome() {
+            const nome = document.getElementById('campoNome').value.trim();
+            if (!nome) {
+                alert("💖 Digite seu nome para a gente te conhecer!");
+                return;
+            }
+            
+            localStorage.setItem(CHAVE_NOME, nome);
+            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
+            await ref.update({ nome: nome });
+            
+            // Troca a caixinha
+            document.getElementById('pedirNome').style.display = 'none';
+            document.getElementById('nomePessoa').textContent = nome;
+            document.getElementById('mensagemBoasVindas').style.display = 'block';
+        }
+
+        // ✅ Fechar sem digitar
+        function fecharCaixa() {
+            document.getElementById('caixaNome').classList.add('oculta');
+        }
+
+        // ✅ Verificar se já tem nome salvo
+        async function verificarNomeSalvo() {
+            const nomeLocal = localStorage.getItem(CHAVE_NOME);
+            if (nomeLocal) {
+                document.getElementById('pedirNome').style.display = 'none';
+                document.getElementById('nomePessoa').textContent = nomeLocal;
+                document.getElementById('mensagemBoasVindas').style.display = 'block';
+                return;
+            }
+            
+            // Verificar no Firebase também
+            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
+            const snap = await ref.once("value");
+            const dados = snap.val();
+            if (dados && dados.nome) {
+                localStorage.setItem(CHAVE_NOME, dados.nome);
+                document.getElementById('pedirNome').style.display = 'none';
+                document.getElementById('nomePessoa').textContent = dados.nome;
+                document.getElementById('mensagemBoasVindas').style.display = 'block';
+            }
+        }
+
+        window.onload = async function() {
+            verificarNomeSalvo(); // Verifica se já se apresentou
+            
+            const novaVisita = ehNovaSessao();
+            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
+            const snap = await ref.once("value");
+            const dados = snap.val() || {};
+            const agora = dataAtual();
+
+            await ref.update({
+                id: ID_VISITANTE,
+                nome: dados.nome || "",
+                acessos: novaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
+                primeiroAcesso: dados.primeiroAcesso || agora,
+                ultimoAcesso: agora
+            });
+        };
+    </script>
+</body>
+</html>
