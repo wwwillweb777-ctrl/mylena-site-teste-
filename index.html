@@ -42,13 +42,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
+            object-position: center top; /* ✅ Mostra a parte de cima da foto = cabeça inteira */
             display: block;
         }
-        /* BOTÃO CHAT — MENOR, MAIS COMPACTO */
+        /* BOTÃO CHAT — EXATAMENTE COMO VOCÊ DEIXOU */
         .botao-chat-principal {
             text-align: center;
-            margin: 0.5rem 0 0.8rem; /* ← Espaço reduzido em cima e embaixo */
+            margin: 0.5rem 0 0.8rem;
             padding: 0 0.5rem;
         }
         .botao-chat-principal a {
@@ -58,10 +58,10 @@
             gap: 0.4rem;
             background: linear-gradient(90deg, #25D366, #00A884);
             color: #fff;
-            padding: 0.6rem 1.4rem; /* ← Altura do botão DIMINUÍDA */
+            padding: 0.6rem 1.4rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.9rem; /* ← Fonte um pouco menor */
+            font-size: 0.9rem;
             text-decoration: none;
             box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
             transition: all 0.3s ease;
@@ -234,7 +234,7 @@
         </div>
 
         <div class="conteudo-interno">
-            <!-- BOTÃO CHAT — AGORA MAIS COMPACTO -->
+            <!-- BOTÃO EXATAMENTE COMO VOCÊ FEZ -->
             <div class="botao-chat-principal">
                 <a href="chat.html">
                     <span class="icone-balao">💬</span>
