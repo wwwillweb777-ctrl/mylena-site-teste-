@@ -31,7 +31,7 @@
             overflow: hidden;
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
         }
-        /* ✅ FOTO DO TOPO AJUSTADA — CABEÇA TODA APARECENDO */
+        /* ✅ FOTO DESCIDA 20% — CABEÇA TODA VISÍVEL */
         .banner-topo {
             width: 100%;
             height: 340px;
@@ -43,10 +43,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 25%; /* Desce a imagem para mostrar a cabeça toda */
+            object-position: center 20%; /* Desceu 20% */
             display: block;
         }
-        /* ✅ BOTÃO CHAT EXATAMENTE IGUAL AO DA MENINA */
+        /* ✅ BOTÃO DIMINUÍDO EM 15% — MAIS COMPACTO */
         .botao-chat-principal {
             text-align: center;
             margin: 1.5rem 0;
@@ -56,23 +56,24 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.7rem;
+            gap: 0.6rem;
             background: linear-gradient(90deg, #25D366, #00A884);
             color: #fff;
-            padding: 1.2rem 2.5rem;
+            padding: 1.0rem 2.1rem; /* -15% em relação ao anterior */
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1.15rem;
+            font-size: 1.0rem;
             text-decoration: none;
-            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 0 18px rgba(37, 211, 102, 0.4);
             transition: all 0.3s ease;
             width: 100%;
+            max-width: 90%;
         }
         .botao-chat-principal a:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 25px rgba(37, 211, 102, 0.55);
+            box-shadow: 0 0 22px rgba(37, 211, 102, 0.55);
         }
-        .icone-balao { font-size: 1.4rem; }
+        .icone-balao { font-size: 1.25rem; }
         .dourado { color: #d4af37; }
         .conteudo-interno { padding: 0 1.5rem 1.5rem; }
         .titulo { text-align: center; margin-bottom: 0.5rem; }
@@ -229,13 +230,13 @@
 </head>
 <body>
     <div class="cartaz">
-        <!-- ✅ FOTO DO TOPO — CABEÇA TODA VISÍVEL -->
+        <!-- FOTO DESCIDA 20% -->
         <div class="banner-topo">
             <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260916-WA0002.webp" alt="Gabriel do Corte ✂️💈">
         </div>
 
         <div class="conteudo-interno">
-            <!-- ✅ BOTÃO CHAT IGUALZINHO AO DA MENINA -->
+            <!-- BOTÃO DIMINUÍDO EM 15% -->
             <div class="botao-chat-principal">
                 <a href="chat.html">
                     <span class="icone-balao">💬</span>
