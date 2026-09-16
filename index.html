@@ -4,206 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gabriel do Corte ✂️💈</title>
-
-    <!-- Firebase - CDN Oficial -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
             background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
             font-family: 'Segoe UI', sans-serif;
-            padding: 1rem;
+            padding: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* 🏆 BANNER PRINCIPAL */
-        .banner {
-            max-width: 450px;
-            margin: 0 auto 1.5rem;
+        .tela {
+            max-width: 420px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* 🏆 ÁREA DE MENSAGEM — AGORA EM CIMA */
+        .caixa-mensagem {
             background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-            border-radius: 20px;
-            padding: 1.5rem;
+            border-radius: 24px;
+            padding: 1.5rem 1.2rem;
             text-align: center;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            animation: brilho 2s ease-in-out infinite alternate;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
         }
-        @keyframes brilho {
-            from { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
-            to { box-shadow: 0 0 35px rgba(212, 175, 55, 0.6); }
-        }
-        .banner-logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
+        .destaque-gratis {
             background: #000;
-            padding: 0.5rem;
+            color: #d4af37;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .texto-principal {
+            color: #2a2a2a;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+        .local {
+            color: #000;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        /* 🖼️ IMAGEM — VEM DEPOIS */
+        .caixa-imagem {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+        }
+        .caixa-imagem img {
+            width: 100%;
+            height: auto;
+            display: block;
             object-fit: cover;
         }
-        .banner-titulo {
-            color: #000;
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .banner-gratis {
-            background: #000;
-            color: #d4af37;
-            padding: 0.6rem 1rem;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin: 0.8rem 0;
-            display: inline-block;
-        }
-        .banner-texto {
-            color: #2a2a2a;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-        }
-        .banner-local {
-            color: #000;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        .banner-botao {
-            display: inline-block;
-            background: #000;
-            color: #d4af37;
-            padding: 0.9rem 2rem;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        .banner-botao:hover {
-            transform: scale(1.05);
-        }
 
-        /* CARTÃO PRINCIPAL */
-        .cartaz {
-            max-width: 450px;
-            margin: 0 auto;
+        /* 💬 BOTÃO ÚNICO — VERDE + BRANCO */
+        .caixa-botao {
             background: #000;
             border-radius: 24px;
-            border: 3px solid #d4af37;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
-        }
-        .logo-topo {
-            width: 100%;
-            height: 220px;
-            overflow: hidden;
-        }
-        .logo-topo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .conteudo {
-            padding: 1.5rem;
+            padding: 1.5rem 1.2rem;
             text-align: center;
+            border: 3px solid #d4af37;
         }
-        .titulo {
+        .nome {
             color: #d4af37;
             font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
         }
-        .subtitulo {
+        .slogan {
             color: #999;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.3rem;
+            font-size: 0.95rem;
         }
         .botao-chat {
-            display: inline-block;
-            background: linear-gradient(90deg, #d4af37, #b8860b);
-            color: #000;
-            padding: 0.9rem 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25D366;
+            color: #fff;
+            padding: 1rem 2.5rem;
             border-radius: 50px;
             font-weight: bold;
-            text-decoration: none;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            transition: transform 0.3s ease;
         }
         .botao-chat:hover {
             transform: scale(1.05);
-        }
-        .rodape {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #666;
-            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- 🏆 BANNER PUBLICITÁRIO -->
-    <div class="banner">
-        <img 
-            src="https://raw.githubusercontent.com/wwwillweb777-ctrl/Fotos-Gabriel-do-corte/main/logo.webp" 
-            alt="Logo Gabriel do Corte" 
-            class="banner-logo"
-            loading="lazy">
-        
-        <h2 class="banner-titulo">Gabriel do Corte — Inaugurando! ✂️💈</h2>
-        
-        <div class="banner-gratis">🎉 CORTES TOTALMENTE GRATUITOS!</div>
-        
-        <p class="banner-texto">
-            Estou começando por agora bem aqui no bairro!<br>
-            Venha fazer seu corte com qualidade e estilo!
-        </p>
-        
-        <p class="banner-local">
-            📍 Rua Quatro — Bem na esquina!
-        </p>
-        
-        <a href="chat.html" class="banner-botao">💬 Entre no chat e agende!</a>
-    </div>
+    <div class="tela">
+        <!-- 🏆 MENSAGEM — EM CIMA AGORA -->
+        <div class="caixa-mensagem">
+            <div class="destaque-gratis">🎉 CORTES TOTALMENTE GRATUITOS!</div>
+            <p class="texto-principal">
+                Estou começando por agora bem aqui no bairro!<br>
+                Venha fazer seu corte com qualidade e estilo!
+            </p>
+            <p class="local">📍 Rua Quatro — Bem na esquina!</p>
+        </div>
 
-    <!-- CARTÃO PRINCIPAL -->
-    <div class="cartaz">
-        <div class="logo-topo">
+        <!-- 🖼️ IMAGEM — NO MEIO -->
+        <div class="caixa-imagem">
             <img 
                 src="https://raw.githubusercontent.com/wwwillweb777-ctrl/Fotos-Gabriel-do-corte/main/logo.webp" 
-                alt="Gabriel do Corte"
+                alt="Gabriel do Corte — Atendimento"
                 loading="lazy">
         </div>
-        <div class="conteudo">
-            <h1 class="titulo">Gabriel do Corte</h1>
-            <p class="subtitulo">Seu estilo, meu compromisso 💈✨</p>
+
+        <!-- 💬 BOTÃO — SÓ UM, VERDE E BRANCO -->
+        <div class="caixa-botao">
+            <h2 class="nome">Gabriel do Corte</h2>
+            <p class="slogan">Seu estilo, meu compromisso 💈✨</p>
             <a href="chat.html" class="botao-chat">💬 Conversar agora</a>
         </div>
     </div>
-
-    <p class="rodape">📍 Rua Quatro — Esquina | Gabriel do Corte © 2026</p>
-
-    <script>
-        // ==========================================
-        // FIREBASE — JÁ CONFIGURADO ✅
-        // ==========================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
-            authDomain: "chave-key-teste.firebaseapp.com",
-            databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
-            projectId: "chave-key-teste",
-            storageBucket: "chave-key-teste.appspot.com",
-            messagingSenderId: "58692158626",
-            appId: "1:58692158626:web:2762d42ea0abf6726943fb"
-        };
-
-        // Inicializa Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.database();
-    </script>
 
 </body>
 </html>
