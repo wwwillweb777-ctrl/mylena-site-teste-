@@ -31,23 +31,22 @@
             overflow: hidden;
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
         }
-        .banner-topo {
+        /* ✅ ÁREA DA LOGO NO LUGAR DO BANNER */
+        .logo-topo {
             width: 100%;
-            height: 320px;
-            overflow: hidden;
-            border-bottom-left-radius: 32px;
-            border-bottom-right-radius: 32px;
+            padding: 2rem 1rem 1rem;
+            text-align: center;
         }
-        .banner-topo img {
+        .logo-topo img {
+            max-width: 220px;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             display: block;
+            margin: 0 auto;
         }
-        /* ✅ BOTÃO CHAT — ESTILO BONITO IGUAL AO EXEMPLO */
         .botao-chat-principal {
             text-align: center;
-            margin: 1.5rem 0;
+            margin: 0.5rem 0 1.5rem;
         }
         .botao-chat-principal a {
             display: inline-flex;
@@ -71,7 +70,7 @@
         }
         .icone-balao { font-size: 1.4rem; }
         .dourado { color: #d4af37; }
-        .conteudo-interno { padding: 1.5rem; }
+        .conteudo-interno { padding: 0 1.5rem 1.5rem; }
         .titulo { text-align: center; margin-bottom: 0.5rem; }
         .titulo-principal {
             font-size: 2.5rem;
@@ -148,19 +147,18 @@
             .galeria { grid-template-columns: 1fr; }
             .item-trabalho img { height: 160px; }
             .titulo-principal { font-size: 2rem; }
-            .banner-topo { height: 260px; }
         }
     </style>
 </head>
 <body>
     <div class="cartaz">
-        <!-- ✅ BANNER DO TOPO — IMAGEM TROCADA -->
-        <div class="banner-topo">
-            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260916-WA0002.webp" alt="Gabriel do Corte ✂️💈">
+        <!-- ✅ LOGO NO LUGAR DE CIMA -->
+        <div class="logo-topo">
+            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/logo.webp" alt="Gabriel do Corte ✂️💈">
         </div>
-        <div class="conteudo-interno">
 
-            <!-- ✅ BOTÃO CHAT — ESTILO BONITO E DESTAQUE -->
+        <div class="conteudo-interno">
+            <!-- ✅ BOTÃO CHAT ABAIXO DA LOGO -->
             <div class="botao-chat-principal">
                 <a href="chat.html">
                     <span class="icone-balao">💬</span>
@@ -179,8 +177,13 @@
                 <h3>✨ Nossos Trabalhos ✨</h3>
                 <p class="sub-titulo">Estilo que combina com você 💈</p>
             </div>
-            <!-- ✅ FOTOS DA GALERIA — LINKS DIRETOS -->
+            <!-- ✅ FOTO QUE TAVA EM CIMA AGORA ESTÁ AQUI JUNTO COM AS OUTRAS -->
             <div class="galeria">
+                <div class="item-trabalho">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260916-WA0002.webp"
+                         alt="Gabriel do Corte" loading="lazy">
+                    <p class="nome-trabalho">💈 Destaque</p>
+                </div>
                 <div class="item-trabalho">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260915-WA0037.webp"
                          alt="Corte Estilo" loading="lazy">
