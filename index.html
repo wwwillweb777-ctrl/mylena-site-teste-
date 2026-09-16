@@ -3,30 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encanto Nail Designer</title>
+    <title>Gabriel do Corte ✂️💈</title>
+
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-    
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
-            background: linear-gradient(180deg, #fff0f8 0%, #ffe6f2 100%);
+            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
             background-image: 
-                radial-gradient(#ffb3d9 1px, transparent 1px),
-                radial-gradient(#ffb3d9 1px, transparent 1px);
-            background-size: 25px 25px;
-            background-position: 0 0, 12.5px 12.5px;
+                radial-gradient(#2a2a2a 1px, transparent 1px),
+                radial-gradient(#2a2a2a 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
             font-family: 'Segoe UI', sans-serif;
             padding: 1rem;
+            color: #fff;
         }
         .cartaz {
             max-width: 450px;
             margin: 0 auto;
-            background: #fff;
+            background: #000;
             border-radius: 24px;
-            border: 3px solid #ff99cc;
+            border: 3px solid #d4af37;
             overflow: hidden;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
         }
         .banner-topo {
             width: 100%;
@@ -41,108 +44,62 @@
             object-fit: cover;
             display: block;
         }
-
-        /* ✅ CAIXA DE BOAS-VINDAS — CURIOSIDADE */
-        .caixa-boas-vindas {
-            background: linear-gradient(135deg, #fff0f8, #ffe6f2);
-            border: 2px solid #ff99cc;
-            border-radius: 20px;
-            padding: 1.2rem;
-            margin: 1rem;
+        /* ✅ BOTÃO CHAT — ESTILO BONITO IGUAL AO EXEMPLO */
+        .botao-chat-principal {
             text-align: center;
-            transition: all 0.3s;
+            margin: 1.5rem 0;
         }
-        .caixa-boas-vindas.oculta { display: none; }
-        .caixa-boas-vindas h4 {
-            color: #ff66b2;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .caixa-boas-vindas p {
-            color: #b34782;
-            font-size: 0.95rem;
-            margin-bottom: 0.8rem;
-            line-height: 1.5;
-        }
-        .campo-nome {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #ff99cc;
-            border-radius: 12px;
-            font-size: 1rem;
-            text-align: center;
-            margin-bottom: 0.6rem;
-            outline: none;
-        }
-        .btn-salvar-nome {
-            background: linear-gradient(90deg, #ff66b2, #ff80c0);
-            color: white;
-            border: none;
-            padding: 0.7rem 2rem;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .btn-salvar-nome:hover { transform: scale(1.05); }
-        .btn-depois {
-            background: transparent;
-            border: none;
-            color: #b34782;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .mensagem-retorno {
-            color: #993366;
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 0.5rem;
-        }
-
-        .botao-chat-topo { text-align: center; margin: 0.8rem 0; }
-        .botao-chat-topo a {
-            display: inline-block;
+        .botao-chat-principal a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
             background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white;
-            padding: 0.7rem 2rem;
+            color: #fff;
+            padding: 1.1rem 2rem;
             border-radius: 50px;
             font-weight: bold;
+            font-size: 1.15rem;
             text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            width: 92%;
         }
-        .coracao { color: #ff66b2; }
-        .conteudo-interno { padding: 0 1.5rem 1.5rem; }
+        .botao-chat-principal a:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+        }
+        .icone-balao { font-size: 1.4rem; }
+        .dourado { color: #d4af37; }
+        .conteudo-interno { padding: 1.5rem; }
         .titulo { text-align: center; margin-bottom: 0.5rem; }
         .titulo-principal {
             font-size: 2.5rem;
-            color: #ff66b2;
+            color: #d4af37;
             font-family: Georgia, serif;
-            font-style: italic;
+            letter-spacing: 2px;
         }
-        .titulo-sub { font-size: 1.4rem; font-family: cursive; color: #222; }
-        .sub-titulo { text-align: center; color: #b34782; letter-spacing: 2px; margin: 0.5rem 0 1rem; }
+        .titulo-sub { font-size: 1.4rem; font-family: sans-serif; color: #ccc; font-weight: 600; }
+        .sub-titulo { text-align: center; color: #999; letter-spacing: 3px; margin: 0.5rem 0 1rem; text-transform: uppercase; }
         .faixa-destaque {
-            background: linear-gradient(90deg, #ff66b2, #ff80c0);
-            color: white;
+            background: linear-gradient(90deg, #d4af37, #f4d03f);
+            color: #000;
             padding: 0.7rem 1.8rem;
             border-radius: 50px;
             font-weight: bold;
             display: inline-block;
             position: relative;
             left: 50%; transform: translateX(-50%);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-
         .galeria-titulo {
             text-align: center;
             margin: 1.5rem 0 1rem;
         }
         .galeria-titulo h3 {
-            color: #ff66b2;
+            color: #d4af37;
             font-size: 1.6rem;
             font-family: Georgia, serif;
-            font-style: italic;
         }
         .galeria {
             display: grid;
@@ -160,46 +117,33 @@
             height: 140px;
             object-fit: cover;
             border-radius: 16px;
-            border: 2px solid #ffd9e6;
+            border: 2px solid #d4af37;
         }
         .nome-trabalho {
             margin-top: 0.5rem;
-            color: #993366;
+            color: #d4af37;
             font-weight: 600;
             font-size: 0.9rem;
             text-align: center;
         }
-
         .caixa-servicos {
-            border: 2px solid #ff99cc; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fff;
+            border: 2px solid #d4af37; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; background: #111;
         }
         .servico { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; }
-        .servico-nome { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: #993366; font-size: 1.1rem; }
+        .servico-nome { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: #f4d03f; font-size: 1.1rem; }
         .preco-circulo {
-            width: 70px; height: 70px; border: 2px solid #ff99cc; border-radius: 50%;
-            background: #ffe6f2; display: flex; align-items: center; justify-content: center;
-            color: #d63384; font-weight: bold;
+            width: 70px; height: 70px; border: 2px solid #d4af37; border-radius: 50%;
+            background: #222; display: flex; align-items: center; justify-content: center;
+            color: #f4d03f; font-weight: bold;
         }
-        .acrescimo { font-size: 0.9rem; color: #b34782; margin-left: 1.8rem; margin-top: -0.3rem; }
-        .area-contato { display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0; gap: 1rem; }
-        .img-baixo {
-            width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid #ff99cc; flex-shrink: 0;
-        }
-        .img-baixo img { width: 100%; height: 100%; object-fit: cover; }
-        .botao-wpp { flex: 1; }
-        .botao-wpp a {
-            display: block; background: linear-gradient(90deg, #25D366, #128C7E); color: white;
-            padding: 1rem; border-radius: 50px; font-weight: bold; text-decoration: none; text-align: center;
-        }
-        .destaques { display: flex; justify-content: space-around; text-align: center; margin: 1.5rem 0; color: #993366; font-size: 0.95rem; }
-        .em-breve { border: 2px dashed #ff99cc; border-radius: 16px; padding: 1.2rem; text-align: center; color: #b34782; margin-bottom: 1rem; }
-        .rodape { text-align: center; color: #b34782; font-size: 0.9rem; margin-bottom: 1rem; }
+        .destaques { display: flex; justify-content: space-around; text-align: center; margin: 1.5rem 0; color: #999; font-size: 0.95rem; }
+        .em-breve { border: 2px dashed #d4af37; border-radius: 16px; padding: 1.2rem; text-align: center; color: #999; margin-bottom: 1rem; }
+        .rodape { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
         .botao-acesso-total { text-align: center; margin-top: 1rem; }
         .botao-acesso-total a {
-            display: inline-block; background: linear-gradient(90deg, #993366, #b34782);
-            color: white; padding: 0.6rem 2.5rem; border-radius: 50px; font-weight: bold; text-decoration: none;
+            display: inline-block; background: linear-gradient(90deg, #d4af37, #b8860b);
+            color: #000; padding: 0.6rem 2.5rem; border-radius: 50px; font-weight: bold; text-decoration: none;
         }
-        
         @media (max-width: 380px) {
             .galeria { grid-template-columns: 1fr; }
             .item-trabalho img { height: 160px; }
@@ -210,126 +154,98 @@
 </head>
 <body>
     <div class="cartaz">
+        <!-- ✅ BANNER DO TOPO — IMAGEM TROCADA -->
         <div class="banner-topo">
-            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
+            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260916-WA0002.webp" alt="Gabriel do Corte ✂️💈">
         </div>
         <div class="conteudo-interno">
-            <div class="botao-chat-topo">
-                <a href="chat.html">💬 Chat, vem bater um papo 😃</a>
+
+            <!-- ✅ BOTÃO CHAT — ESTILO BONITO E DESTAQUE -->
+            <div class="botao-chat-principal">
+                <a href="chat.html">
+                    <span class="icone-balao">💬</span>
+                    <span>Chat, vem bater um papo 😊</span>
+                </a>
             </div>
+
             <div class="titulo">
-                <h1 class="titulo-principal">Encanto</h1>
-                <h2 class="titulo-sub">Nail Designer</h2>
-                <p class="sub-titulo"><span class="coracao">♥</span> ESTÚDIO DE UNHAS <span class="coracao">♥</span></p>
+                <h1 class="titulo-principal">GABRIEL</h1>
+                <h2 class="titulo-sub">DO CORTE</h2>
+                <p class="sub-titulo"><span class="dourado">✂️</span> BARBEARIA & ESTILO <span class="dourado">💈</span></p>
             </div>
-            <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
+            <p class="faixa-destaque">Estilo e precisão em cada corte ✨</p>
 
-            <!-- ✅ CAIXA DE CURIOSIDADE — AQUI ACONTECE A MAGIA! -->
-            <div class="caixa-boas-vindas" id="caixaNome">
-                <div id="pedirNome">
-                    <h4>💫 Olá! Que bom que você veio!</h4>
-                    <p>Temos algo especial para te contar...<br>Mas antes, como gostaria de ser chamada? 💖</p>
-                    <input type="text" id="campoNome" class="campo-nome" placeholder="Digite seu nome aqui ✨">
-                    <button onclick="salvarNome()" class="btn-salvar-nome">Enviar 💌</button>
-                    <br>
-                    <button onclick="fecharCaixa()" class="btn-depois">Depois, obrigada 😊</button>
-                </div>
-                <div id="mensagemBoasVindas" class="mensagem-retorno" style="display: none;">
-                    💖 Que alegria ter você aqui, <span id="nomePessoa"></span>! 💖
-                </div>
-            </div>
-
-            <!-- ✅ GALERIA -->
             <div class="galeria-titulo">
                 <h3>✨ Nossos Trabalhos ✨</h3>
-                <p class="sub-titulo">Cada detalhe feito com carinho 💖</p>
+                <p class="sub-titulo">Estilo que combina com você 💈</p>
             </div>
+            <!-- ✅ FOTOS DA GALERIA — LINKS DIRETOS -->
             <div class="galeria">
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" alt="Francesa Branca com Brilho" loading="lazy">
-                    <p class="nome-trabalho">💎 Francesa Branca</p>
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260915-WA0037.webp"
+                         alt="Corte Estilo" loading="lazy">
+                    <p class="nome-trabalho">✂️ Corte Estilo</p>
                 </div>
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" alt="Nude em Gel" loading="lazy">
-                    <p class="nome-trabalho">💅 Nude em Gel</p>
-                </div>
-                <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" alt="Preto & Dourado" loading="lazy">
-                    <p class="nome-trabalho">✨ Preto & Dourado</p>
-                </div>
-                <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-prata.webp" alt="Preto & Prata" loading="lazy">
-                    <p class="nome-trabalho">🖤 Preto & Prata</p>
-                </div>
-                <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rosa-prata.webp" alt="Rosa Mármore Brilhante" loading="lazy">
-                    <p class="nome-trabalho">💖 Rosa Mármore</p>
-                </div>
-                <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rose-brilho.webp" alt="Rosa Suave Brilhante" loading="lazy">
-                    <p class="nome-trabalho">🌸 Rosa Suave</p>
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Fotos-Gabriel-do-corte@main/IMG-20260915-WA0038.webp"
+                         alt="Barba & Acabamento" loading="lazy">
+                    <p class="nome-trabalho">💈 Barba & Acabamento</p>
                 </div>
             </div>
 
             <div class="caixa-servicos">
                 <div class="servico">
-                    <div class="servico-nome"><span class="coracao">♥</span> Unhas Longas</div>
+                    <div class="servico-nome"><span class="dourado">✂️</span> Corte Social</div>
                     <div class="preco-circulo">A definir</div>
                 </div>
                 <div class="servico">
-                    <div class="servico-nome"><span class="coracao">♥</span> Unhas Curtas</div>
+                    <div class="servico-nome"><span class="dourado">🧔</span> Barba</div>
                     <div class="preco-circulo">A definir</div>
                 </div>
                 <div class="servico">
-                    <div class="servico-nome"><span class="coracao">♥</span> 3D & Brilhos</div>
-                    <div class="preco-circulo">+A definir</div>
+                    <div class="servico-nome"><span class="dourado">✨</span> Corte + Barba</div>
+                    <div class="preco-circulo">A definir</div>
                 </div>
-                <p class="acrescimo">ACRÉSCIMO</p>
-            </div>
-            <div class="area-contato">
-                <div class="img-baixo">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
-                </div>
-                <div class="botao-wpp">
-                    <a href="https://wa.me/553173449910" target="_blank">
-                        💬 WhatsApp<br><small>apenas para emergência 🚨</small>
-                    </a>
+                <div class="servico">
+                    <div class="servico-nome"><span class="dourado">💈</span> Degradê</div>
+                    <div class="preco-circulo">A definir</div>
                 </div>
             </div>
+
             <div class="destaques">
-                <div><span class="coracao">♥</span> Exclusividade</div>
-                <div><span class="coracao">♥</span> Qualidade</div>
-                <div><span class="coracao">♥</span> Amor</div>
+                <div><span class="dourado">✂️</span> Estilo</div>
+                <div><span class="dourado">💈</span> Qualidade</div>
+                <div><span class="dourado">⏰</span> Pontualidade</div>
             </div>
+
             <div class="em-breve">
-                <p>📸 Novidades em breve</p>
-                <p>⏰ Horários — em atualização</p>
+                <p>💬 Tire suas dúvidas e faça orçamentos pelo chat</p>
+                <p>📅 Agende diretamente aqui no site ✂️</p>
             </div>
-            <p class="rodape">💖 Agradecemos sua preferência 💖</p>
+
+            <p class="rodape">💈 Gabriel do Corte — Todos os direitos reservados © 2026</p>
+
             <div class="botao-acesso-total">
-                <a href="gerenciar.html">🔐 Área administrativa 🔐</a>
+                <a href="gerenciar.html">🔐 Área Administrativa</a>
             </div>
         </div>
     </div>
 
     <script>
-        const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
-        const CHAVE_ID = "idVisitante_encanto";
-        const CHAVE_NOME = "nome_visitante_encanto";
-        const CHAVE_SESSAO_ATIVA = "sessao_ativa_encanto";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjUBVWJ7f9A8hQXWBhWjLfWxgJ9lhh1YI",
+            authDomain: "gabriel-do-corte.firebaseapp.com",
+            databaseURL: "https://gabriel-do-corte-default-rtdb.firebaseio.com",
+            projectId: "gabriel-do-corte",
+            storageBucket: "gabriel-do-corte.firebasestorage.app",
+            messagingSenderId: "877270325019",
+            appId: "1:877270325019:web:8d75ee1b905a1b8f16a5be"
+        };
 
-        function gerarIdUnico() {
-            const p1 = Math.random().toString(36).slice(2, 6);
-            const p2 = Math.random().toString(36).slice(2, 6);
-            return `usr_${p1}${p2}`;
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
-        if (!ID_VISITANTE) {
-            ID_VISITANTE = gerarIdUnico();
-            localStorage.setItem(CHAVE_ID, ID_VISITANTE);
-        }
-
+        const CHAVE_SESSAO = "sessao_gabriel";
         function dataAtual() {
             return new Date().toLocaleString('pt-BR', {
                 day: '2-digit', month: '2-digit', year: 'numeric',
@@ -337,88 +253,14 @@
             });
         }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
-            authDomain: "willobras.firebaseapp.com",
-            databaseURL: "https://willobras-default-rtdb.firebaseio.com",
-            projectId: "willobras",
-            storageBucket: "willobras.firebasestorage.app",
-            messagingSenderId: "66370500400",
-            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
-        };
-
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        function ehNovaSessao() {
-            if (!sessionStorage.getItem(CHAVE_SESSAO_ATIVA)) {
-                sessionStorage.setItem(CHAVE_SESSAO_ATIVA, 'sim');
-                return true;
-            }
-            return false;
-        }
-
-        // ✅ Salvar nome no Firebase
-        async function salvarNome() {
-            const nome = document.getElementById('campoNome').value.trim();
-            if (!nome) {
-                alert("💖 Digite seu nome para a gente te conhecer!");
-                return;
-            }
-            
-            localStorage.setItem(CHAVE_NOME, nome);
-            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
-            await ref.update({ nome: nome });
-            
-            // Troca a caixinha
-            document.getElementById('pedirNome').style.display = 'none';
-            document.getElementById('nomePessoa').textContent = nome;
-            document.getElementById('mensagemBoasVindas').style.display = 'block';
-        }
-
-        // ✅ Fechar sem digitar
-        function fecharCaixa() {
-            document.getElementById('caixaNome').classList.add('oculta');
-        }
-
-        // ✅ Verificar se já tem nome salvo
-        async function verificarNomeSalvo() {
-            const nomeLocal = localStorage.getItem(CHAVE_NOME);
-            if (nomeLocal) {
-                document.getElementById('pedirNome').style.display = 'none';
-                document.getElementById('nomePessoa').textContent = nomeLocal;
-                document.getElementById('mensagemBoasVindas').style.display = 'block';
-                return;
-            }
-            
-            // Verificar no Firebase também
-            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
-            const snap = await ref.once("value");
-            const dados = snap.val();
-            if (dados && dados.nome) {
-                localStorage.setItem(CHAVE_NOME, dados.nome);
-                document.getElementById('pedirNome').style.display = 'none';
-                document.getElementById('nomePessoa').textContent = dados.nome;
-                document.getElementById('mensagemBoasVindas').style.display = 'block';
-            }
-        }
-
         window.onload = async function() {
-            verificarNomeSalvo(); // Verifica se já se apresentou
-            
-            const novaVisita = ehNovaSessao();
-            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
-            const snap = await ref.once("value");
-            const dados = snap.val() || {};
-            const agora = dataAtual();
-
-            await ref.update({
-                id: ID_VISITANTE,
-                nome: dados.nome || "",
-                acessos: novaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
-                primeiroAcesso: dados.primeiroAcesso || agora,
-                ultimoAcesso: agora
-            });
+            if (!sessionStorage.getItem(CHAVE_SESSAO)) {
+                sessionStorage.setItem(CHAVE_SESSAO, 'ativa');
+                const ref = db.ref("gabriel_do_corte/visitas");
+                const snap = await ref.once("value");
+                const total = snap.val() || 0;
+                await ref.set(total + 1);
+            }
         };
     </script>
 </body>
