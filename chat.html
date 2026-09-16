@@ -20,14 +20,14 @@
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
         }
         .cabecalho {
-            background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; padding: 1.2rem; text-align: center;
+            background: linear-gradient(90deg, #25D366, #128C7E); color: white; padding: 1.2rem; text-align: center;
             border-top-left-radius: 20px; border-top-right-radius: 20px;
         }
-        .meu-id { font-size: 0.7rem; opacity: 0.7; margin-top: 0.4rem; background: rgba(255,255,255,.1); padding: 0.25rem 0.8rem; border-radius: 50px; display: inline-block; color: #999; }
+        .meu-id { font-size: 0.75rem; opacity: 0.85; margin-top: 0.4rem; background: rgba(255,255,255,.2); padding: 0.25rem 0.8rem; border-radius: 50px; display: inline-block; }
         .area-mensagens { height: 400px; overflow-y: auto; padding: 1rem; background: #111; }
         .mensagem { margin-bottom: 1rem; max-width: 85%; }
         .mensagem-eu { margin-left: auto; }
-        .mensagem-eu .bolha { background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; border-radius: 18px 18px 4px 18px; padding: 0.8rem 1rem; }
+        .mensagem-eu .bolha { background: linear-gradient(90deg, #25D366, #128C7E); color: white; border-radius: 18px 18px 4px 18px; padding: 0.8rem 1rem; }
         .mensagem-resposta { margin-right: auto; }
         .mensagem-resposta .bolha { background: #222; color: #d4af37; border-radius: 18px 18px 18px 4px; padding: 0.8rem 1rem; border: 1px solid #d4af37; }
         .nome-remetente { font-weight: bold; font-size: 0.85rem; margin-bottom: 0.2rem; }
@@ -37,14 +37,11 @@
         .escondido { display: none !important; }
         input, textarea { width: 100%; padding: 0.9rem; border: 2px solid #d4af37; border-radius: 12px; font-size: 1rem; margin-bottom: 0.8rem; outline: none; background: #1a1a1a; color: #fff; }
         input:focus, textarea:focus { border-color: #f4d03f; }
-        button { width: 100%; padding: 0.9rem; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; }
-        button:disabled { opacity: 0.7; cursor: not-allowed; }
-        .btn-principal { background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; }
+        button { width: 100%; padding: 0.9rem; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+        .btn-principal { background: linear-gradient(90deg, #25D366, #128C7E); color: white; }
         .boas-vindas { background: #1a1a1a; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; text-align: center; color: #d4af37; border: 1px solid #333; }
         .voltar { text-align: center; margin-top: 1rem; }
-        .voltar a { color: #d4af37; text-decoration: none; font-size: 0.9rem; }
-        .status-envio { text-align: center; padding: 0.8rem; color: #d4af37; font-size: 0.9rem; }
-        .sucesso { color: #25D366; }
+        .voltar a { color: #d4af37; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -52,10 +49,10 @@
         <div class="cabecalho">
             <h1>💬 Conversar com Gabriel</h1>
             <p>Gabriel do Corte ✂️💈</p>
-            <div class="meu-id">🆔 <span id="exibirMeuId">—</span></div>
+            <div class="meu-id">🆔 Seu ID: <span id="exibirMeuId">—</span></div>
         </div>
         <div id="areaMensagens" class="area-mensagens">
-            <p class="aviso-vazio">Olá! É um prazer receber você 😊<br>Digite seu nome para começarmos ↓</p>
+            <p class="aviso-vazio">Olá! 😊<br>Digite seu nome abaixo para começar ↓</p>
         </div>
         <div id="passoNome" class="form-etapa">
             <input type="text" id="nomeChat" placeholder="Digite seu nome ✂️">
@@ -64,39 +61,20 @@
         <div id="passoMensagem" class="form-etapa escondido">
             <div class="boas-vindas" id="mensagemBoasVindas"></div>
             <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💈"></textarea>
-            <button id="btnEnviar" class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
-            <p id="statusEnvio" class="status-envio escondido"></p>
+            <button class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
         </div>
     </div>
     <div class="voltar"><a href="index.html">← Voltar para a página principal</a></div>
 
     <script>
-        // ==========================================
-        // ⚙️ CONFIGURAÇÕES
-        // ==========================================
-        const SEU_NUMERO_WHATSAPP = "553190721928";
-        const LINK_SITE = "https://wwwillweb777-ctrl.github.io/mylena-site-teste-/";
         const NOME_ADMIN = "Gabriel do Corte ✂️💈";
         const CAMINHO_MSG = "gabriel_do_corte/mensagens";
         const CAMINHO_ACESSOS = "gabriel_do_corte/acessos";
         const CHAVE_ID = "idVisitante_gabriel";
         const CHAVE_NOME = "nomeVisitante_gabriel";
 
-        // ==========================================
-        // 🔥 FIREBASE — CHAVE DE TESTE
-        // ==========================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
-            authDomain: "chave-key-teste.firebaseapp.com",
-            databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
-            projectId: "chave-key-teste",
-            storageBucket: "chave-key-teste.firebasestorage.app",
-            messagingSenderId: "58692158626",
-            appId: "1:58692158626:web:2762d42ea0abf6726943fb"
-        };
-        
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        // ⚠️ RESET — descomente APENAS UMA VEZ se quiser recomeçar do zero
+        // localStorage.clear();
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -104,6 +82,7 @@
             return `usr_${p1}${p2}`;
         }
 
+        // ✅ MESMO ID do index.html — nunca muda, nunca cria outro
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -114,10 +93,30 @@
         let nomeUsuario = localStorage.getItem(CHAVE_NOME) || "";
 
         function dataAtual() {
-            return new Date().toLocaleString('pt-BR');
+            return new Date().toLocaleString('pt-BR', {
+                day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
+            });
         }
 
+        // ✅ CONFIGURAÇÃO DO GABRIEL DO CORTE — exclusiva
+        const firebaseConfig = {
+  apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
+  authDomain: "chave-key-teste.firebaseapp.com",
+  databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
+  projectId: "chave-key-teste",
+  storageBucket: "chave-key-teste.firebasestorage.app",
+  messagingSenderId: "58692158626",
+  appId: "1:58692158626:web:2762d42ea0abf6726943fb"
+};
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ==========================================
+        // ✅ NÃO CONTA VISITA AQUI — SÓ O index.html conta
+        // ==========================================
         window.onload = async function() {
+            // Busca o nome que JÁ ESTÁ SALVO no banco — sempre o mesmo
             const snap = await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).once("value");
             const nomeBanco = snap.val();
             
@@ -130,39 +129,34 @@
                 await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
                 entrarNoChat();
             }
+            // Se não tem nome → fica na tela de digitar
         };
 
         async function salvarNome() {
             const nome = document.getElementById('nomeChat').value.trim();
-            if (!nome) { alert("Por favor, digite seu nome!"); return; }
+            if (!nome) { alert("⚠️ Digite seu nome!"); return; }
             
             nomeUsuario = nome;
             localStorage.setItem(CHAVE_NOME, nomeUsuario);
+            
+            // ✅ SALVA UMA VEZ — FICA FIXO PARA SEMPRE
             await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
+            
             entrarNoChat();
         }
 
         function entrarNoChat() {
             document.getElementById('passoNome').classList.add('escondido');
             document.getElementById('passoMensagem').classList.remove('escondido');
-            document.getElementById('mensagemBoasVindas').innerHTML = 
-                `👋 Bem-vindo, <strong>${nomeUsuario}</strong>!<br>Escreva sua mensagem abaixo que respondo em breve 💈✨`;
+            document.getElementById('mensagemBoasVindas').innerHTML = `👋 Que bom te ver, <strong>${nomeUsuario}</strong>! 💈<br>Identificado automaticamente ✂️`;
             carregarMensagens();
         }
 
         async function enviarMensagem() {
             const texto = document.getElementById('campoMensagem').value.trim();
-            if (!texto) { alert("Por favor, escreva sua mensagem!"); return; }
-
-            const btn = document.getElementById('btnEnviar');
-            const status = document.getElementById('statusEnvio');
+            if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
             
-            btn.disabled = true;
-            btn.textContent = "Enviando...";
-            status.textContent = "📡 Enviando sua mensagem...";
-            status.classList.remove('escondido', 'sucesso');
-
-            // Salva no banco
+            // ✅ Usa o nome FIXO — nunca muda
             await db.ref(CAMINHO_MSG).push({
                 idRemetente: ID_VISITANTE,
                 nomeRemetente: nomeUsuario || "Visitante",
@@ -171,39 +165,9 @@
                 resposta: null,
                 dataResposta: null
             });
-
-            // Prepara mensagem para você
-            const mensagemWhatsApp = `🔔 NOVA MENSAGEM — Gabriel do Corte
-
-👤 Cliente: ${nomeUsuario}
-💬 Mensagem: ${texto}
-🕐 Enviado em: ${dataAtual()}
-
-🔗 Responda pelo site: ${LINK_SITE}
-
-———
-Gabriel do Corte ✂️💈`;
-
-            // Abre o WhatsApp — MAS o cliente não vê nada relacionado a ele
-            const link = `https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagemWhatsApp)}`;
-            
-            // Tenta abrir em segundo plano (melhor esforço)
-            const aba = window.open(link, '_blank');
-            if (aba) aba.blur();
-            window.focus();
-
-            // ✅ O cliente só vê ISSO — limpo e profissional
-            status.textContent = "✅ Mensagem enviada com sucesso! Entrarei em contato em breve 💈✨";
-            status.classList.add('sucesso');
             
             document.getElementById('campoMensagem').value = '';
-            
-            setTimeout(() => {
-                status.classList.add('escondido');
-            }, 5000);
-
-            btn.disabled = false;
-            btn.textContent = "📤 Enviar Mensagem";
+            alert("✅ Mensagem enviada! Em breve responderei 💈");
         }
 
         function carregarMensagens() {
@@ -228,7 +192,7 @@ Gabriel do Corte ✂️💈`;
                     if (m.resposta) area.innerHTML += `
                         <div class="mensagem mensagem-resposta">
                             <div class="bolha">
-                                <p class="nome-remetente">✂️ ${NOME_ADMIN}</p>
+                                <p class="nome-remetente">📩 ${NOME_ADMIN}</p>
                                 <p>${m.resposta}</p>
                                 <p class="data">${m.dataResposta || ''}</p>
                             </div>
