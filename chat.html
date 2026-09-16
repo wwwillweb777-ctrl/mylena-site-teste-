@@ -20,14 +20,14 @@
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
         }
         .cabecalho {
-            background: linear-gradient(90deg, #25D366, #128C7E); color: white; padding: 1.2rem; text-align: center;
+            background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; padding: 1.2rem; text-align: center;
             border-top-left-radius: 20px; border-top-right-radius: 20px;
         }
-        .meu-id { font-size: 0.75rem; opacity: 0.85; margin-top: 0.4rem; background: rgba(255,255,255,.2); padding: 0.25rem 0.8rem; border-radius: 50px; display: inline-block; }
+        .meu-id { font-size: 0.7rem; opacity: 0.7; margin-top: 0.4rem; background: rgba(255,255,255,.1); padding: 0.25rem 0.8rem; border-radius: 50px; display: inline-block; color: #999; }
         .area-mensagens { height: 400px; overflow-y: auto; padding: 1rem; background: #111; }
         .mensagem { margin-bottom: 1rem; max-width: 85%; }
         .mensagem-eu { margin-left: auto; }
-        .mensagem-eu .bolha { background: linear-gradient(90deg, #25D366, #128C7E); color: white; border-radius: 18px 18px 4px 18px; padding: 0.8rem 1rem; }
+        .mensagem-eu .bolha { background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; border-radius: 18px 18px 4px 18px; padding: 0.8rem 1rem; }
         .mensagem-resposta { margin-right: auto; }
         .mensagem-resposta .bolha { background: #222; color: #d4af37; border-radius: 18px 18px 18px 4px; padding: 0.8rem 1rem; border: 1px solid #d4af37; }
         .nome-remetente { font-weight: bold; font-size: 0.85rem; margin-bottom: 0.2rem; }
@@ -37,12 +37,14 @@
         .escondido { display: none !important; }
         input, textarea { width: 100%; padding: 0.9rem; border: 2px solid #d4af37; border-radius: 12px; font-size: 1rem; margin-bottom: 0.8rem; outline: none; background: #1a1a1a; color: #fff; }
         input:focus, textarea:focus { border-color: #f4d03f; }
-        button { width: 100%; padding: 0.9rem; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        .btn-principal { background: linear-gradient(90deg, #25D366, #128C7E); color: white; }
+        button { width: 100%; padding: 0.9rem; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; }
+        button:active { transform: scale(0.98); }
+        .btn-principal { background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; }
+        .btn-principal:disabled { opacity: 0.7; cursor: not-allowed; }
         .boas-vindas { background: #1a1a1a; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; text-align: center; color: #d4af37; border: 1px solid #333; }
         .voltar { text-align: center; margin-top: 1rem; }
-        .voltar a { color: #d4af37; text-decoration: none; }
-        .aviso-whatsapp { background: rgba(37, 211, 102, 0.1); border: 1px solid #25D366; padding: 0.8rem; border-radius: 12px; margin-top: 0.8rem; text-align: center; color: #25D366; font-size: 0.9rem; }
+        .voltar a { color: #d4af37; text-decoration: none; font-size: 0.9rem; }
+        .sucesso-msg { color: #25D366; text-align: center; padding: 0.5rem; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -50,7 +52,7 @@
         <div class="cabecalho">
             <h1>💬 Conversar com Gabriel</h1>
             <p>Gabriel do Corte ✂️💈</p>
-            <div class="meu-id">🆔 Seu ID: <span id="exibirMeuId">—</span></div>
+            <div class="meu-id">🆔 <span id="exibirMeuId">—</span></div>
         </div>
         <div id="areaMensagens" class="area-mensagens">
             <p class="aviso-vazio">Olá! 😊<br>Digite seu nome abaixo para começar ↓</p>
@@ -62,15 +64,15 @@
         <div id="passoMensagem" class="form-etapa escondido">
             <div class="boas-vindas" id="mensagemBoasVindas"></div>
             <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💈"></textarea>
-            <button class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
-            <p class="aviso-whatsapp">📲 Você também será avisado pelo WhatsApp ✅</p>
+            <button id="btnEnviar" class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
+            <p id="confirmacaoEnvio" class="sucesso-msg escondido">✅ Mensagem enviada! Respondo em breve 💈✨</p>
         </div>
     </div>
     <div class="voltar"><a href="index.html">← Voltar para a página principal</a></div>
 
     <script>
         // ==========================================
-        // ⚙️ DADOS — JÁ CONFIGURADOS ✅
+        // ⚙️ CONFIGURAÇÕES — JÁ PRONTAS ✅
         // ==========================================
         const SEU_NUMERO_WHATSAPP = "553190721928";
         const LINK_SITE = "https://wwwillweb777-ctrl.github.io/mylena-site-teste-/";
@@ -151,7 +153,11 @@
         async function enviarMensagem() {
             const texto = document.getElementById('campoMensagem').value.trim();
             if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
-            
+
+            const btn = document.getElementById('btnEnviar');
+            btn.disabled = true;
+            btn.textContent = "Enviando...";
+
             // Salva no banco
             await db.ref(CAMINHO_MSG).push({
                 idRemetente: ID_VISITANTE,
@@ -162,23 +168,32 @@
                 dataResposta: null
             });
 
-            // ✅ MENSAGEM QUE CHEGA NO SEU WHATSAPP
-            const mensagemWhatsApp = `🔔 NOVA MENSAGEM NO SITE!
+            // ✅ MENSAGEM QUE CHEGA NO SEU WHATSAPP — DISCRETA, CLARA E COMPLETA
+            const mensagemWhatsApp = `🔔 NOVA MENSAGEM — Gabriel do Corte
 
-👤 Nome: ${nomeUsuario}
+👤 Cliente: ${nomeUsuario}
 💬 Mensagem: ${texto}
-🕐 Data: ${dataAtual()}
+🕐 Enviado em: ${dataAtual()}
 
-🌐 Responda pelo site: ${LINK_SITE}
+🔗 Acessar conversa: ${LINK_SITE}
 
 ———
 Gabriel do Corte ✂️💈`;
 
-            // Abre o WhatsApp com a mensagem pronta
-            window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagemWhatsApp)}`, '_blank');
-            
+            // Abre WhatsApp em JANELA SEPARADA — o cliente NÃO vê nada estranho
+            const link = `https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagemWhatsApp)}`;
+            window.open(link, '_blank', 'width=1,height=1,left=-9999,top=-9999');
+
+            // ✅ O cliente só vê isso — limpo e elegante
             document.getElementById('campoMensagem').value = '';
-            alert("✅ Mensagem enviada com sucesso! Em breve responderei 💈✨");
+            document.getElementById('confirmacaoEnvio').classList.remove('escondido');
+            
+            setTimeout(() => {
+                document.getElementById('confirmacaoEnvio').classList.add('escondido');
+            }, 4000);
+
+            btn.disabled = false;
+            btn.textContent = "📤 Enviar Mensagem";
         }
 
         function carregarMensagens() {
