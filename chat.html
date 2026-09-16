@@ -42,6 +42,7 @@
         .boas-vindas { background: #1a1a1a; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; text-align: center; color: #d4af37; border: 1px solid #333; }
         .voltar { text-align: center; margin-top: 1rem; }
         .voltar a { color: #d4af37; text-decoration: none; }
+        .aviso-whatsapp { background: rgba(37, 211, 102, 0.1); border: 1px solid #25D366; padding: 0.8rem; border-radius: 12px; margin-top: 0.8rem; text-align: center; color: #25D366; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -62,19 +63,38 @@
             <div class="boas-vindas" id="mensagemBoasVindas"></div>
             <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💈"></textarea>
             <button class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
+            <p class="aviso-whatsapp">📲 Você também será avisado pelo WhatsApp ✅</p>
         </div>
     </div>
     <div class="voltar"><a href="index.html">← Voltar para a página principal</a></div>
 
     <script>
+        // ==========================================
+        // ⚙️ DADOS — JÁ CONFIGURADOS ✅
+        // ==========================================
+        const SEU_NUMERO_WHATSAPP = "553190721928";
+        const LINK_SITE = "https://wwwillweb777-ctrl.github.io/mylena-site-teste-/";
         const NOME_ADMIN = "Gabriel do Corte ✂️💈";
         const CAMINHO_MSG = "gabriel_do_corte/mensagens";
         const CAMINHO_ACESSOS = "gabriel_do_corte/acessos";
         const CHAVE_ID = "idVisitante_gabriel";
         const CHAVE_NOME = "nomeVisitante_gabriel";
 
-        // ⚠️ RESET — descomente APENAS UMA VEZ se quiser recomeçar do zero
-        // localStorage.clear();
+        // ==========================================
+        // 🔥 FIREBASE — CHAVE DE TESTE ✅
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
+            authDomain: "chave-key-teste.firebaseapp.com",
+            databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
+            projectId: "chave-key-teste",
+            storageBucket: "chave-key-teste.firebasestorage.app",
+            messagingSenderId: "58692158626",
+            appId: "1:58692158626:web:2762d42ea0abf6726943fb"
+        };
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -82,7 +102,6 @@
             return `usr_${p1}${p2}`;
         }
 
-        // ✅ MESMO ID do index.html — nunca muda, nunca cria outro
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -93,30 +112,10 @@
         let nomeUsuario = localStorage.getItem(CHAVE_NOME) || "";
 
         function dataAtual() {
-            return new Date().toLocaleString('pt-BR', {
-                day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
-            });
+            return new Date().toLocaleString('pt-BR');
         }
 
-        // ✅ CONFIGURAÇÃO DO GABRIEL DO CORTE — exclusiva
-        const firebaseConfig = {
-  apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
-  authDomain: "chave-key-teste.firebaseapp.com",
-  databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
-  projectId: "chave-key-teste",
-  storageBucket: "chave-key-teste.firebasestorage.app",
-  messagingSenderId: "58692158626",
-  appId: "1:58692158626:web:2762d42ea0abf6726943fb"
-};
-        
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // ==========================================
-        // ✅ NÃO CONTA VISITA AQUI — SÓ O index.html conta
-        // ==========================================
         window.onload = async function() {
-            // Busca o nome que JÁ ESTÁ SALVO no banco — sempre o mesmo
             const snap = await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).once("value");
             const nomeBanco = snap.val();
             
@@ -129,7 +128,6 @@
                 await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
                 entrarNoChat();
             }
-            // Se não tem nome → fica na tela de digitar
         };
 
         async function salvarNome() {
@@ -138,17 +136,15 @@
             
             nomeUsuario = nome;
             localStorage.setItem(CHAVE_NOME, nomeUsuario);
-            
-            // ✅ SALVA UMA VEZ — FICA FIXO PARA SEMPRE
             await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
-            
             entrarNoChat();
         }
 
         function entrarNoChat() {
             document.getElementById('passoNome').classList.add('escondido');
             document.getElementById('passoMensagem').classList.remove('escondido');
-            document.getElementById('mensagemBoasVindas').innerHTML = `👋 Que bom te ver, <strong>${nomeUsuario}</strong>! 💈<br>Identificado automaticamente ✂️`;
+            document.getElementById('mensagemBoasVindas').innerHTML = 
+                `👋 Bem-vindo, <strong>${nomeUsuario}</strong>!<br>É um prazer receber você! 💈✨`;
             carregarMensagens();
         }
 
@@ -156,7 +152,7 @@
             const texto = document.getElementById('campoMensagem').value.trim();
             if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
             
-            // ✅ Usa o nome FIXO — nunca muda
+            // Salva no banco
             await db.ref(CAMINHO_MSG).push({
                 idRemetente: ID_VISITANTE,
                 nomeRemetente: nomeUsuario || "Visitante",
@@ -165,9 +161,24 @@
                 resposta: null,
                 dataResposta: null
             });
+
+            // ✅ MENSAGEM QUE CHEGA NO SEU WHATSAPP
+            const mensagemWhatsApp = `🔔 NOVA MENSAGEM NO SITE!
+
+👤 Nome: ${nomeUsuario}
+💬 Mensagem: ${texto}
+🕐 Data: ${dataAtual()}
+
+🌐 Responda pelo site: ${LINK_SITE}
+
+———
+Gabriel do Corte ✂️💈`;
+
+            // Abre o WhatsApp com a mensagem pronta
+            window.open(`https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagemWhatsApp)}`, '_blank');
             
             document.getElementById('campoMensagem').value = '';
-            alert("✅ Mensagem enviada! Em breve responderei 💈");
+            alert("✅ Mensagem enviada com sucesso! Em breve responderei 💈✨");
         }
 
         function carregarMensagens() {
@@ -192,7 +203,7 @@
                     if (m.resposta) area.innerHTML += `
                         <div class="mensagem mensagem-resposta">
                             <div class="bolha">
-                                <p class="nome-remetente">📩 ${NOME_ADMIN}</p>
+                                <p class="nome-remetente">✂️ ${NOME_ADMIN}</p>
                                 <p>${m.resposta}</p>
                                 <p class="data">${m.dataResposta || ''}</p>
                             </div>
