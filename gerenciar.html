@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Administrativa — Gabriel do Corte ✂️💈</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
+            background-image: 
+                radial-gradient(#2a2a2a 1px, transparent 1px),
+                radial-gradient(#2a2a2a 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 1rem;
+            color: #fff;
+        }
+
+        .caixa-principal {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2rem;
+            font-family: Georgia, serif;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #f4d03f;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .escondido { display: none !important; }
+
+        /* === TELA DE LOGIN === */
+        .tela-login-card {
+            max-width: 420px;
+            margin: 3rem auto;
+            background: #000;
+            border-radius: 28px;
+            border: 4px solid #d4af37;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+        }
+
+        .grupo-senha {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #d4af37;
+            border-radius: 16px;
+            font-size: 1rem;
+            outline: none;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #f4d03f;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+        }
+
+        .botao-olho {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .btn-principal {
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .btn-sair {
+            background: linear-gradient(90deg, #e53935, #f4511e);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-verde { 
+            background: linear-gradient(90deg, #25D366, #128C7E); 
+            color: white; 
+        }
+        .btn-vermelho { 
+            background: linear-gradient(90deg, #ef5350, #e53935); 
+            color: white; 
+        }
+        .btn-dourado {
+            background: linear-gradient(90deg, #d4af37, #f4d03f);
+            color: #000;
+        }
+
+        .aviso-erro {
+            color: #ff6b6b;
+            background: #2c1515;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #ef5350;
+        }
+
+        .cabecalho-tela {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* === LISTA DE CONVERSAS === */
+        .bloco-pessoa {
+            margin-bottom: 1.5rem;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px solid #d4af37;
+            background: #111;
+        }
+
+        .cabecalho-pessoa {
+            background: linear-gradient(90deg, #d4af37, #f4d03f);
+            color: #000;
+            padding: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .dados-pessoa {
+            padding: 1.2rem;
+        }
+
+        .linha-dado {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 50px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .etq-id { background: #1e3a5f; color: #90caf9; }
+
+        .status-bolinha {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .pendente { background: #4a3f00; color: #ffd54f; }
+        .respondida { background: #1b5e20; color: #c8e6c9; }
+
+        .botoes-pessoa {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .botoes-pessoa button {
+            flex: 1;
+            padding: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .botoes-geral {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .botoes-geral button { width: 100%; }
+
+        .vazio {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #999;
+        }
+
+        /* === TELA CHAT === */
+        .tela-chat {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 40px);
+            border: 3px solid #d4af37;
+            border-radius: 24px;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .chat-cabecalho {
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-nome-usuario {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .chat-conteudo {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: #0a0a0a;
+        }
+
+        .bolha-usuario {
+            background: #25D366;
+            color: white;
+            padding: 1rem 1.3rem;
+            border-radius: 24px 24px 24px 8px;
+            margin-bottom: 1rem;
+            max-width: 85%;
+        }
+
+        .bolha-admin {
+            background: #1f1f1f;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 1rem 1.3rem;
+            border-radius: 24px 24px 8px 24px;
+            margin-bottom: 1rem;
+            margin-left: auto;
+            max-width: 85%;
+        }
+
+        .bolha-nome {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            opacity: 0.9;
+        }
+
+        .bolha-texto {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 0.3rem;
+        }
+
+        .bolha-data {
+            font-size: 0.75rem;
+            opacity: 0.75;
+        }
+
+        .chat-entrada {
+            padding: 1rem;
+            border-top: 2px solid #333;
+        }
+
+        .chat-entrada textarea {
+            border-radius: 20px;
+            resize: none;
+            margin-bottom: 0.8rem;
+        }
+
+        .chat-botao-enviar {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .botao-voltar {
+    background: #ffffff;       /* Fundo BRANCO */
+    color: #000000;            /* Texto PRETO (melhor leitura) */
+    border: none;
+    padding: 0.7rem 1.2rem;    /* Fica maior e mais visível */
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.botao-voltar:before {
+    content: "← ";
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+        
+
+        .botao-voltar:before {
+            content: "← ";
+        }
+
+        @media (max-width: 480px) {
+            .bolha-usuario, .bolha-admin {
+                max-width: 92%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="telaLogin" class="caixa-principal">
+        <div class="tela-login-card">
+            <h1>🔐 Área Administrativa</h1>
+            <p class="subtitulo">✂️ Gabriel do Corte 💈</p>
+
+            <div class="grupo-senha">
+                <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
+                <button type="button" class="botao-olho" onclick="alternarVisibilidade()">🙈</button>
+            </div>
+
+            <p id="avisoErro" class="aviso-erro escondido">❌ Senha incorreta!</p>
+
+            <button class="btn-principal" onclick="verificarSenha()">🔐 Entrar</button>
+
+            <div style="text-align:center; margin-top:1.5rem;">
+                <a href="index.html" style="color:#d4af37; text-decoration:none;">← Voltar para o site</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- LISTA DE CONVERSAS -->
+    <div id="telaLista" class="caixa-principal escondido">
+        <div class="cabecalho-tela">
+            <h1 style="justify-content:flex-start;">💬 Conversas</h1>
+            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
+        </div>
+
+        <div id="lista-usuarios"></div>
+
+        <div class="botoes-geral">
+            <button class="btn-vermelho" onclick="if(confirm('Apagar TODAS as mensagens?')) limparTodasMensagens()">🗑️ Limpar Todas as Mensagens</button>
+        </div>
+    </div>
+
+    <!-- TELA CHAT INDIVIDUAL -->
+    <div id="telaChat" class="caixa-principal escondido">
+        <div class="tela-chat">
+            <div class="chat-cabecalho">
+                <button class="botao-voltar" onclick="fecharChat()">Voltar</button>
+                <span class="chat-nome-usuario" id="chatNomeCabecalho"></span>
+                <span style="font-size:0.8rem; opacity:0.8;" id="chatIdCabecalho"></span>
+            </div>
+
+            <div class="chat-conteudo" id="chatConteudo"></div>
+
+            <div class="chat-entrada">
+                <textarea id="chatResposta" rows="3" placeholder="Escreva sua mensagem... ✂️💈"></textarea>
+                <button class="btn-verde chat-botao-enviar" onclick="enviarRespostaChat()">📤 Enviar Mensagem</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ⚙️ CONFIGURAÇÕES
+        const SENHA_ADMIN = "Gabriel123";
+        const CAMINHO_MSG = "gabriel_do_corte/mensagens";
+
+        // 🔌 FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjUBVWJ7f9A8hQXWBhWjLfWxgJ9lhh1YI",
+            authDomain: "gabriel-do-corte.firebaseapp.com",
+            databaseURL: "https://gabriel-do-corte-default-rtdb.firebaseio.com",
+            projectId: "gabriel-do-corte",
+            storageBucket: "gabriel-do-corte.firebasestorage.app",
+            messagingSenderId: "877270325019",
+            appId: "1:877270325019:web:8d75ee1b905a1b8f16a5be"
+        };
+
+        let db = null;
+        let conversas = {};
+        let usuarioAtual = null;
+        let ouvinteMensagens = null;
+
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
+
+        function dataAtual() {
+            return new Date().toLocaleString('pt-BR');
+        }
+
+        // 🔧 Converte data "dia/mês/ano, hora:minuto" para número
+        function parseDataPtBr(texto) {
+            if (!texto) return 0;
+            try {
+                const [parteData, parteHora] = texto.split(', ');
+                const [dia, mes, ano] = parteData.split('/').map(Number);
+                const [h, m] = parteHora.split(':').map(Number);
+                return new Date(ano, mes - 1, dia, h, m).getTime();
+            } catch {
+                return 0;
+            }
+        }
+
+        let senhaVisivel = false;
+        function alternarVisibilidade() {
+            const campo = document.getElementById('campoSenha');
+            const botao = document.querySelector('.botao-olho');
+            senhaVisivel = !senhaVisivel;
+            campo.type = senhaVisivel ? 'text' : 'password';
+            botao.textContent = senhaVisivel ? '👁️' : '🙈';
+        }
+
+        function verificarSenha() {
+            const digitada = document.getElementById('campoSenha').value.trim();
+            if (digitada === SENHA_ADMIN) {
+                document.getElementById('telaLogin').classList.add('escondido');
+                document.getElementById('telaLista').classList.remove('escondido');
+                carregarConversas();
+            } else {
+                document.getElementById('avisoErro').classList.remove('escondido');
+                document.getElementById('campoSenha').value = '';
+            }
+        }
+
+        function sair() {
+            pararOuvirMensagens();
+            if (!confirm("Sair da área administrativa?")) return;
+            document.getElementById('telaLista').classList.add('escondido');
+            document.getElementById('telaChat').classList.add('escondido');
+            document.getElementById('telaLogin').classList.remove('escondido');
+            document.getElementById('avisoErro').classList.add('escondido');
+            document.getElementById('campoSenha').value = '';
+            senhaVisivel = false;
+            usuarioAtual = null;
+        }
+
+        // === CARREGAR LISTA — TEMPO REAL ===
+        function carregarConversas() {
+            if (!db) {
+                document.getElementById('lista-usuarios').innerHTML = 
+                    '<div class="vazio"><p>⚠️ Firebase não carregou. Atualize a página.</p></div>';
+                return;
+            }
+
+            db.ref(CAMINHO_MSG).on("value", snapMensagens => {
+                const mensagens = snapMensagens.val() || {};
+                conversas = {};
+                const container = document.getElementById('lista-usuarios');
+                container.innerHTML = '';
+
+                if (!snapMensagens.exists()) {
+                    container.innerHTML = '<div class="vazio"><p>📭 Nenhuma mensagem ainda</p></div>';
+                    return;
+                }
+
+                const porId = {};
+                for (const chave in mensagens) {
+                    const m = mensagens[chave];
+                    if (!m.idRemetente) continue;
+                    if (!porId[m.idRemetente]) porId[m.idRemetente] = [];
+                    porId[m.idRemetente].push({ chave, ...m });
+                }
+
+                for (const id in porId) {
+                    const mensagensUser = porId[id];
+                    const nome = mensagensUser[0]?.nomeRemetente || "Visitante";
+                    const temResposta = mensagensUser.some(m => m.resposta);
+
+                    conversas[id] = {
+                        id,
+                        nome,
+                        mensagens: mensagensUser
+                    };
+
+                    container.innerHTML += `
+                        <div class="bloco-pessoa">
+                            <div class="cabecalho-pessoa">${nome}</div>
+                            <div class="dados-pessoa">
+                                <div class="linha-dado etq-id">🆔 ${id}</div>
+                                <div class="status-bolinha ${temResposta ? 'respondida' : 'pendente'}">
+                                    ${temResposta ? '✅ Respondida' : '⏳ Pendente'}
+                                </div>
+                            </div>
+                            <div class="botoes-pessoa">
+                                <button class="btn-dourado" onclick="abrirChat('${id}')">💬 Abrir Chat</button>
+                                <button class="btn-vermelho" onclick="apagarConversa('${id}')">🗑️ Apagar</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function pararOuvirMensagens() {
+            if (ouvinteMensagens) {
+                db.ref(CAMINHO_MSG).off("value", ouvinteMensagens);
+                ouvinteMensagens = null;
+            }
+        }
+
+        // === ABRIR CHAT — TEMPO REAL + ORDEM CORRETA ===
+        function abrirChat(idUsuario) {
+            if (!conversas[idUsuario]) {
+                alert("Conversa não encontrada!");
+                return;
+            }
+
+            usuarioAtual = conversas[idUsuario];
+            
+            document.getElementById('telaLista').classList.add('escondido');
+            document.getElementById('telaChat').classList.remove('escondido');
+
+            document.getElementById('chatNomeCabecalho').textContent = usuarioAtual.nome;
+            document.getElementById('chatIdCabecalho').textContent = `🆔 ${idUsuario}`;
+
+            ouvinteMensagens = db.ref(CAMINHO_MSG).on("value", snap => {
+                const todasMsg = snap.val() || {};
+                const mensagensFiltradas = [];
+                
+                for (const chave in todasMsg) {
+                    const m = todasMsg[chave];
+                    if (m.idRemetente === idUsuario) {
+                        mensagensFiltradas.push({ chave, ...m });
+                    }
+                }
+
+                usuarioAtual.mensagens = mensagensFiltradas;
+                carregarMensagens();
+            });
+        }
+
+        function carregarMensagens() {
+            const conteudo = document.getElementById('chatConteudo');
+            conteudo.innerHTML = '';
+
+            if (!usuarioAtual || !usuarioAtual.mensagens.length) {
+                conteudo.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Nenhuma mensagem 💬</p>';
+                return;
+            }
+
+            // ✅ Cria lista combinada: mensagem do cliente + resposta como entrada separada
+            const listaOrdenada = [];
+
+            usuarioAtual.mensagens.forEach(m => {
+                // Mensagem da cliente
+                listaOrdenada.push({
+                    tipo: 'cliente',
+                    nome: usuarioAtual.nome,
+                    texto: m.texto,
+                    dataStr: m.data,
+                    dataNum: parseDataPtBr(m.data),
+                    temResposta: !!m.resposta
+                });
+
+                // Resposta do admin — com a DATA DA RESPOSTA
+                if (m.resposta) {
+                    listaOrdenada.push({
+                        tipo: 'admin',
+                        nome: '📩 Gabriel do Corte ✂️💈',
+                        texto: m.resposta,
+                        dataStr: m.dataResposta,
+                        dataNum: parseDataPtBr(m.dataResposta)
+                    });
+                }
+            });
+
+            // ✅ ORDENA TUDO PELA DATA — cliente e resposta juntos
+            listaOrdenada.sort((a, b) => a.dataNum - b.dataNum);
+
+            // ✅ Exibe na ordem correta
+            listaOrdenada.forEach(item => {
+                if (item.tipo === 'cliente') {
+                    conteudo.innerHTML += `
+                        <div class="bolha-usuario">
+                            <div class="bolha-nome">${item.nome}</div>
+                            <div class="bolha-texto">${item.texto}</div>
+                            <div class="bolha-data">${item.dataStr || ''}</div>
+                        </div>
+                    `;
+                    if (!item.temResposta) {
+                        conteudo.innerHTML += `<div class="status-bolinha pendente">⏳ Pendente</div>`;
+                    }
+                } else {
+                    conteudo.innerHTML += `
+                        <div class="bolha-admin">
+                            <div class="bolha-nome">${item.nome}</div>
+                            <div class="bolha-texto">${item.texto}</div>
+                            <div class="bolha-data">${item.dataStr || ''}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            // ✅ Vai direto pra última mensagem — sempre embaixo
+            conteudo.scrollTop = conteudo.scrollHeight;
+        }
+
+        function fecharChat() {
+            pararOuvirMensagens();
+            usuarioAtual = null;
+            document.getElementById('telaChat').classList.add('escondido');
+            document.getElementById('telaLista').classList.remove('escondido');
+        }
+
+        async function enviarRespostaChat() {
+            if (!usuarioAtual || !db) return;
+
+            const texto = document.getElementById('chatResposta').value.trim();
+            if (!texto) {
+                alert("Escreva sua mensagem! ✍️");
+                return;
+            }
+
+            const msgPendente = usuarioAtual.mensagens.find(m => !m.resposta);
+            
+            if (!msgPendente) {
+                alert("Todas as mensagens já foram respondidas! ✅");
+                document.getElementById('chatResposta').value = '';
+                return;
+            }
+
+            await db.ref(`${CAMINHO_MSG}/${msgPendente.chave}`).update({
+                resposta: texto,
+                dataResposta: dataAtual()
+            });
+
+            alert("✅ Mensagem enviada!");
+            document.getElementById('chatResposta').value = '';
+        }
+
+        async function apagarConversa(id) {
+            if (!confirm(`Apagar conversa com ${conversas[id]?.nome || id}?`)) return;
+            if (!db) return;
+            
+            const mensagensParaApagar = conversas[id].mensagens.map(m => m.chave);
+            for (const chave of mensagensParaApagar) {
+                await db.ref(`${CAMINHO_MSG}/${chave}`).remove();
+            }
+            
+            alert("✅ Conversa apagada!");
+        }
+
+        async function limparTodasMensagens() {
+            if (!confirm("APAGAR TUDO? Essa ação não pode ser desfeita!")) return;
+            if (!db) return;
+            await db.ref(CAMINHO_MSG).remove();
+            alert("✅ Todas as mensagens foram apagadas!");
+        }
+    </script>
+</body>
+</html>
