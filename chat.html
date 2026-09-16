@@ -38,13 +38,13 @@
         input, textarea { width: 100%; padding: 0.9rem; border: 2px solid #d4af37; border-radius: 12px; font-size: 1rem; margin-bottom: 0.8rem; outline: none; background: #1a1a1a; color: #fff; }
         input:focus, textarea:focus { border-color: #f4d03f; }
         button { width: 100%; padding: 0.9rem; border: none; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; }
-        button:active { transform: scale(0.98); }
+        button:disabled { opacity: 0.7; cursor: not-allowed; }
         .btn-principal { background: linear-gradient(90deg, #d4af37, #b8860b); color: #000; }
-        .btn-principal:disabled { opacity: 0.7; cursor: not-allowed; }
         .boas-vindas { background: #1a1a1a; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; text-align: center; color: #d4af37; border: 1px solid #333; }
         .voltar { text-align: center; margin-top: 1rem; }
         .voltar a { color: #d4af37; text-decoration: none; font-size: 0.9rem; }
-        .sucesso-msg { color: #25D366; text-align: center; padding: 0.5rem; font-size: 0.9rem; }
+        .status-envio { text-align: center; padding: 0.8rem; color: #d4af37; font-size: 0.9rem; }
+        .sucesso { color: #25D366; }
     </style>
 </head>
 <body>
@@ -55,7 +55,7 @@
             <div class="meu-id">🆔 <span id="exibirMeuId">—</span></div>
         </div>
         <div id="areaMensagens" class="area-mensagens">
-            <p class="aviso-vazio">Olá! 😊<br>Digite seu nome abaixo para começar ↓</p>
+            <p class="aviso-vazio">Olá! É um prazer receber você 😊<br>Digite seu nome para começarmos ↓</p>
         </div>
         <div id="passoNome" class="form-etapa">
             <input type="text" id="nomeChat" placeholder="Digite seu nome ✂️">
@@ -65,14 +65,14 @@
             <div class="boas-vindas" id="mensagemBoasVindas"></div>
             <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💈"></textarea>
             <button id="btnEnviar" class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
-            <p id="confirmacaoEnvio" class="sucesso-msg escondido">✅ Mensagem enviada! Respondo em breve 💈✨</p>
+            <p id="statusEnvio" class="status-envio escondido"></p>
         </div>
     </div>
     <div class="voltar"><a href="index.html">← Voltar para a página principal</a></div>
 
     <script>
         // ==========================================
-        // ⚙️ CONFIGURAÇÕES — JÁ PRONTAS ✅
+        // ⚙️ CONFIGURAÇÕES
         // ==========================================
         const SEU_NUMERO_WHATSAPP = "553190721928";
         const LINK_SITE = "https://wwwillweb777-ctrl.github.io/mylena-site-teste-/";
@@ -83,7 +83,7 @@
         const CHAVE_NOME = "nomeVisitante_gabriel";
 
         // ==========================================
-        // 🔥 FIREBASE — CHAVE DE TESTE ✅
+        // 🔥 FIREBASE — CHAVE DE TESTE
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
@@ -134,7 +134,7 @@
 
         async function salvarNome() {
             const nome = document.getElementById('nomeChat').value.trim();
-            if (!nome) { alert("⚠️ Digite seu nome!"); return; }
+            if (!nome) { alert("Por favor, digite seu nome!"); return; }
             
             nomeUsuario = nome;
             localStorage.setItem(CHAVE_NOME, nomeUsuario);
@@ -146,17 +146,21 @@
             document.getElementById('passoNome').classList.add('escondido');
             document.getElementById('passoMensagem').classList.remove('escondido');
             document.getElementById('mensagemBoasVindas').innerHTML = 
-                `👋 Bem-vindo, <strong>${nomeUsuario}</strong>!<br>É um prazer receber você! 💈✨`;
+                `👋 Bem-vindo, <strong>${nomeUsuario}</strong>!<br>Escreva sua mensagem abaixo que respondo em breve 💈✨`;
             carregarMensagens();
         }
 
         async function enviarMensagem() {
             const texto = document.getElementById('campoMensagem').value.trim();
-            if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
+            if (!texto) { alert("Por favor, escreva sua mensagem!"); return; }
 
             const btn = document.getElementById('btnEnviar');
+            const status = document.getElementById('statusEnvio');
+            
             btn.disabled = true;
             btn.textContent = "Enviando...";
+            status.textContent = "📡 Enviando sua mensagem...";
+            status.classList.remove('escondido', 'sucesso');
 
             // Salva no banco
             await db.ref(CAMINHO_MSG).push({
@@ -168,29 +172,35 @@
                 dataResposta: null
             });
 
-            // ✅ MENSAGEM QUE CHEGA NO SEU WHATSAPP — DISCRETA, CLARA E COMPLETA
+            // Prepara mensagem para você
             const mensagemWhatsApp = `🔔 NOVA MENSAGEM — Gabriel do Corte
 
 👤 Cliente: ${nomeUsuario}
 💬 Mensagem: ${texto}
 🕐 Enviado em: ${dataAtual()}
 
-🔗 Acessar conversa: ${LINK_SITE}
+🔗 Responda pelo site: ${LINK_SITE}
 
 ———
 Gabriel do Corte ✂️💈`;
 
-            // Abre WhatsApp em JANELA SEPARADA — o cliente NÃO vê nada estranho
+            // Abre o WhatsApp — MAS o cliente não vê nada relacionado a ele
             const link = `https://wa.me/${SEU_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagemWhatsApp)}`;
-            window.open(link, '_blank', 'width=1,height=1,left=-9999,top=-9999');
+            
+            // Tenta abrir em segundo plano (melhor esforço)
+            const aba = window.open(link, '_blank');
+            if (aba) aba.blur();
+            window.focus();
 
-            // ✅ O cliente só vê isso — limpo e elegante
+            // ✅ O cliente só vê ISSO — limpo e profissional
+            status.textContent = "✅ Mensagem enviada com sucesso! Entrarei em contato em breve 💈✨";
+            status.classList.add('sucesso');
+            
             document.getElementById('campoMensagem').value = '';
-            document.getElementById('confirmacaoEnvio').classList.remove('escondido');
             
             setTimeout(() => {
-                document.getElementById('confirmacaoEnvio').classList.add('escondido');
-            }, 4000);
+                status.classList.add('escondido');
+            }, 5000);
 
             btn.disabled = false;
             btn.textContent = "📤 Enviar Mensagem";
