@@ -86,12 +86,6 @@
         .aparecer { animation: aparecer 0.6s forwards; }
         @keyframes aparecer { to { opacity: 1; } }
 
-        .desaparecer { animation: desaparecer 0.4s forwards; }
-        @keyframes desaparecer {
-            from { opacity: 1; }
-            to { opacity: 0; transform: translateY(-8px); }
-        }
-
         .foto-assunto {
             text-align: center;
             margin: 10px 0 20px 0;
@@ -130,17 +124,11 @@
 
     <script>
         const perfis = {
-            will: {
-                nome: 'Will',
-                foto: 'full.jpg'
-            },
-            troia: {
-                nome: 'Tróia',
-                foto: 'troia.jpg'
-            }
+            will: { nome: 'Will', foto: 'full.jpg' },
+            troia: { nome: 'Tróia', foto: 'troia.jpg' }
         };
 
-        // ✅ Link direto — arquivo solto na raiz!
+        // ✅ NOME DO ARQUIVO CONFIRMADO NO PRINT: serginho.png
         const fotosAssunto = {
             serginho: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste-@main/serginho.png'
         };
@@ -180,13 +168,11 @@
 
             const p = perfis[item.quem];
 
-            // Foto do perfil
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `<img src="${p.foto}" alt="${p.nome}">`;
             tela.appendChild(divFoto);
 
-            // Nome: Will / Nome: Tróia
             const divNome = document.createElement('div');
             divNome.className = 'linha-nome';
             divNome.innerHTML = `
@@ -195,22 +181,20 @@
             `;
             tela.appendChild(divNome);
 
-            // Texto da mensagem primeiro
             const divMsg = document.createElement('div');
             divMsg.className = 'linha';
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
-            // ✅ Foto do assunto DEPOIS da mensagem — só se for o caso
+            // ✅ FOTO DEPOIS DA MENSAGEM — só quando mencionar
             if (item.mostrarFoto && fotosAssunto[item.mostrarFoto]) {
                 const divFotoAssunto = document.createElement('div');
                 divFotoAssunto.className = 'foto-assunto';
-                divFotoAssunto.innerHTML = `<img src="${fotosAssunto[item.mostrarFoto]}" alt="${item.mostrarFoto}">`;
+                divFotoAssunto.innerHTML = `<img src="${fotosAssunto[item.mostrarFoto]}" alt="Serginho">`;
                 tela.appendChild(divFotoAssunto);
                 setTimeout(() => divFotoAssunto.classList.add('visivel'), 350);
             }
 
-            // Ordem de aparecimento
             setTimeout(() => divFoto.classList.add('visivel'), 80);
             setTimeout(() => divNome.classList.add('visivel'), 150);
             setTimeout(() => divMsg.classList.add('aparecer'), 250);
