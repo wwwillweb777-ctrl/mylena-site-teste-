@@ -33,7 +33,6 @@
             justify-content: flex-end;
         }
 
-        /* Foto menor, sem fundo, no topo */
         .foto-perfil {
             text-align: center;
             margin-bottom: 20px;
@@ -55,7 +54,6 @@
             box-shadow: 0 0 12px rgba(0, 255, 0, 0.35);
         }
 
-        /* Nome com fonte especial e brilho */
         .nome-pessoa {
             margin-top: 8px;
             font-family: 'Fira Code', 'Courier New', monospace;
@@ -113,15 +111,15 @@
     <div class="tela-matrix" id="tela"></div>
 
     <script>
-        // ✅ LINKS DIRETOS RÁPIDOS — RAW = funciona como CDN
+        // ✅ LINKS CDN JSDelivr — DIRETOS E RÁPIDOS ⚡
         const perfis = {
             will: {
                 nome: 'Will',
-                foto: 'https://raw.githubusercontent.com/wwwillweb777/mylena-site-teste-/main/full.jpg'
+                foto: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste@main/full.jpg'
             },
             troia: {
                 nome: 'Tróia',
-                foto: 'https://raw.githubusercontent.com/wwwillweb777/mylena-site-teste-/main/troia.jpg'
+                foto: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste@main/troia.jpg'
             }
         };
 
@@ -160,7 +158,6 @@
         }
 
         async function trocarMensagem(item) {
-            // Apaga suavemente
             tela.style.opacity = '0';
             await new Promise(r => setTimeout(r, 400));
             tela.innerHTML = '';
@@ -168,7 +165,6 @@
 
             const pessoa = perfis[item.quem];
 
-            // Foto + nome aparecendo no topo ANTES do texto
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `
@@ -177,17 +173,14 @@
             `;
             tela.appendChild(divFoto);
 
-            // Área da mensagem
             const divMsg = document.createElement('div');
             divMsg.className = 'linha';
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
-            // Foto aparece primeiro → depois o texto começa
             setTimeout(() => divFoto.classList.add('visivel'), 100);
             setTimeout(() => divMsg.classList.add('aparecer'), 200);
 
-            // Digita letra por letra
             const spanTexto = divMsg.querySelector('.mensagem');
             await digitarTexto(spanTexto, item.texto);
             divMsg.querySelector('.cursor').style.display = 'none';
