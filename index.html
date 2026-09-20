@@ -47,7 +47,6 @@
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        /* Imagem do Serginho — proporcional, sem exagerar */
         .imagem-serginho {
             text-align: center;
             margin: 15px 0;
@@ -140,10 +139,9 @@
             }
         };
 
-        // ✅ Imagem do Serginho — link direto CDN
-        const imagemSerginho = 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste@main/FaClubeSerginho_AFazenda18_Votar.png';
+        // ✅ CAMINHO CORRIGIDO — com o hífen no final da pasta!
+        const imagemSerginho = 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste-@main/FaClubeSerginho_AFazenda18_Votar.png';
 
-        // 💬 Conversa — mostra a imagem quando menciona o Serginho
         const conversa = [
             { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
             { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
@@ -179,13 +177,11 @@
 
             const p = perfis[item.quem];
 
-            // Foto do perfil
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `<img src="${p.foto}" alt="${p.nome}">`;
             tela.appendChild(divFoto);
 
-            // Nome: Will / Nome: Tróia
             const divNome = document.createElement('div');
             divNome.className = 'linha-nome';
             divNome.innerHTML = `
@@ -194,7 +190,7 @@
             `;
             tela.appendChild(divNome);
 
-            // Imagem do Serginho — só aparece quando a mensagem pede ✅
+            // ✅ Só aparece quando mencionar o Serginho
             if (item.mostrarSerginho) {
                 const divImg = document.createElement('div');
                 divImg.className = 'imagem-serginho';
@@ -203,7 +199,6 @@
                 setTimeout(() => divImg.classList.add('visivel'), 200);
             }
 
-            // Texto da mensagem
             const divMsg = document.createElement('div');
             divMsg.className = 'linha';
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
