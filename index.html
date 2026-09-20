@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will ↔ Tróia — Conversa</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&display=swap');
+        /* Fonte para a palavra "Nome:" */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap');
+        /* Fonte diferente para os nomes */
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -16,7 +19,6 @@
             align-items: flex-start;
             justify-content: center;
             padding: 30px 40px 120px;
-            font-family: 'Fira Code', 'Courier New', monospace;
         }
 
         .tela-matrix {
@@ -47,28 +49,38 @@
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        .nome-linha {
+        .linha-nome {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             opacity: 0;
             transition: opacity 0.5s ease 0.1s;
         }
 
-        .nome-linha.visivel { opacity: 1; }
+        .linha-nome.visivel { opacity: 1; }
 
-        .nome-pessoa {
+        /* "Nome:" — vermelho, fonte 1 */
+        .etiqueta-nome {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 16px;
+            color: #ff3333;
+            text-shadow: 0 0 6px #ff3333, 0 0 12px #ff0000;
+        }
+
+        /* Nome — branco, fonte 2, mais fina */
+        .valor-nome {
             font-family: 'Fira Code', monospace;
-            font-size: 16px;          /* ← MENOR */
-            font-weight: 300;         /* ← MAIS FINO */
-            letter-spacing: 1px;
-            color: #88ffaa;
-            text-shadow: 0 0 6px #88ffaa, 0 0 12px #44ff88;
+            font-size: 16px;
+            font-weight: 300;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+            margin-left: 4px;
         }
 
         .linha {
             opacity: 0;
             color: #00FF00;
             text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
+            font-family: 'Courier New', monospace;
             font-size: 17px;
             line-height: 1.8;
             transition: opacity 0.3s ease;
@@ -156,10 +168,13 @@
             divFoto.innerHTML = `<img src="${p.foto}" alt="${p.nome}">`;
             tela.appendChild(divFoto);
 
-            // Nome no formato: Will: — mais fino e menor
+            // Linha: Nome: Will — vermelho + branco, fontes diferentes
             const divNome = document.createElement('div');
-            divNome.className = 'nome-linha';
-            divNome.innerHTML = `<span class="nome-pessoa">${p.nome}:</span>`;
+            divNome.className = 'linha-nome';
+            divNome.innerHTML = `
+                <span class="etiqueta-nome">Nome:</span>
+                <span class="valor-nome">${p.nome}</span>
+            `;
             tela.appendChild(divNome);
 
             // Texto da mensagem
@@ -168,7 +183,6 @@
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
-            // Aparece em ordem: foto → nome → texto
             setTimeout(() => divFoto.classList.add('visivel'), 80);
             setTimeout(() => divNome.classList.add('visivel'), 150);
             setTimeout(() => divMsg.classList.add('aparecer'), 250);
