@@ -9,32 +9,69 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-color: #000;
-            font-family: 'Courier New', Courier, monospace;
         }
 
         body {
+            background-color: #000;
             min-height: 100vh;
-            padding: 30px 20px;
-            line-height: 1.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
         }
 
+        /* Moldura da tela do computador */
+        .tela-computador {
+            width: 90%;
+            max-width: 600px;
+            height: 85vh;
+            max-height: 700px;
+            background-color: #050;
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 
+                0 0 0 8px #1a1a1a,
+                0 0 40px rgba(0, 255, 0, 0.25),
+                inset 0 0 60px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        /* Botãozinho da tela */
+        .tela-computador::after {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+        }
+
+        /* Área interna verde */
         .tela-matrix {
+            width: 100%;
+            height: 100%;
+            background-color: #000c00;
+            border-radius: 15px;
+            padding: 25px 20px;
+            overflow-y: auto;
             color: #00FF00;
-            text-shadow: 0 0 8px #00FF00, 0 0 15px #00FF00;
-            font-size: 18px;
-            max-width: 900px;
-            margin: 0 auto;
+            text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
+            font-size: 17px;
+            line-height: 1.7;
         }
 
         .linha {
             opacity: 0;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             white-space: pre-wrap;
         }
 
         .aparecer {
-            animation: aparecer 0.8s forwards;
+            animation: aparecer 0.6s forwards;
         }
 
         @keyframes aparecer {
@@ -64,35 +101,52 @@
         .mensagem {
             color: #00FF00;
         }
+
+        /* Efeito leve de linhas da tela */
+        .tela-matrix::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 2px,
+                rgba(0, 50, 0, 0.03) 2px,
+                rgba(0, 50, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            border-radius: 15px;
+        }
     </style>
 </head>
 <body>
-    <div class="tela-matrix" id="tela">
-        <!-- As linhas vão sendo inseridas aqui pelo JS -->
+    <div class="tela-computador">
+        <div class="tela-matrix" id="tela">
+            <!-- As linhas vão sendo inseridas aqui pelo JS -->
+        </div>
     </div>
 
     <script>
-        // A conversa exatamente como você pediu: entre devs, sobre o Fã Clube
         const conversa = [
-            { nome: 'dev_01', texto: 'E aí, parceiro? Tudo em cima?', pausa: 1200 },
-            { nome: 'dev_02', texto: 'Tudo firme! Olha, estou vendo os vídeos do Fã Clube do Serginho Cabeção...', pausa: 1500 },
-            { nome: 'dev_01', texto: 'Isso mesmo! O conteúdo está lindo, mas precisa chegar pra MUITO mais gente.', pausa: 1400 },
-            { nome: 'dev_02', texto: 'Exatamente! Não pode ficar só com a gente. Temos que fazer o sistema entregar cada vídeo.', pausa: 1600 },
-            { nome: 'dev_01', texto: 'Concordo! Cada post é sobre alguém que marcou uma geração. Malhação, A Fazenda 18, Serginho...', pausa: 1500 },
-            { nome: 'dev_02', texto: 'Isso! A nostalgia é forte demais. O público quer ver, só precisa ENCONTRAR.', pausa: 1400 },
-            { nome: 'dev_01', texto: 'Então é isso: vamos organizar tudo. Nomes limpos, arquivos corretos, legendas certas, hashtags no lugar.', pausa: 1700 },
-            { nome: 'dev_02', texto: 'Certo! Sem lixo no nome, sem rastro de baixador. Cada arquivo com o nome da página = marca que viaja.', pausa: 1600 },
-            { nome: 'dev_01', texto: 'Exato! Quem baixa, leva o nome junto. Quem compartilha, divulga sem perceber.', pausa: 1500 },
-            { nome: 'dev_02', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 1400 },
-            { nome: 'dev_01', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 1300 },
-            { nome: 'dev_02', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões.', pausa: 1500 },
-            { nome: 'dev_01', texto: 'Serginho merece. O público merece. A gente faz acontecer.', pausa: 1400 },
-            { nome: 'dev_02', texto: 'Fechou. Código limpo, coração firme. Vamos crescer! 🚀', pausa: 2000 },
-            { nome: 'dev_01', texto: 'Juntos, lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 1800 },
+            { nome: 'dev_01', texto: 'E aí, parceiro? Tudo firme?', pausa: 1200 },
+            { nome: 'dev_02', texto: 'Tudo certo! Estou de olho nos vídeos do Fã Clube...', pausa: 1500 },
+            { nome: 'dev_01', texto: 'O conteúdo está lindo, mas precisa chegar pra MUITO mais gente.', pausa: 1400 },
+            { nome: 'dev_02', texto: 'Exato! Não pode ficar escondido. Temos que fazer o sistema entregar.', pausa: 1600 },
+            { nome: 'dev_01', texto: 'Malhação, A Fazenda 18, Serginho Cabeção... é história que marca.', pausa: 1500 },
+            { nome: 'dev_02', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar.', pausa: 1400 },
+            { nome: 'dev_01', texto: 'Então vamos organizar: nomes limpos, sem lixo, sem rastro.', pausa: 1300 },
+            { nome: 'dev_02', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 1600 },
+            { nome: 'dev_01', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 1500 },
+            { nome: 'dev_02', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 1400 },
+            { nome: 'dev_01', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões.', pausa: 1500 },
+            { nome: 'dev_02', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 1800 },
+            { nome: 'dev_01', texto: 'Fechou. Código limpo, coração firme. Vamos crescer!', pausa: 1600 },
+            { nome: 'dev_02', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 2000 },
         ];
 
         const tela = document.getElementById('tela');
-        let indice = 0;
 
         function digitarTexto(elemento, texto, velocidade = 35) {
             return new Promise(resolver => {
@@ -115,17 +169,13 @@
             div.innerHTML = `<span class="nome">${item.nome}:</span> <span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(div);
             
-            // Faz aparecer primeiro a linha
             setTimeout(() => div.classList.add('aparecer'), 50);
             
             const spanTexto = div.querySelector('.mensagem');
             await digitarTexto(spanTexto, item.texto);
             
-            // Remove o cursor quando terminar
             div.querySelector('.cursor').style.display = 'none';
-            
-            // Rola a tela pra última linha
-            window.scrollTo(0, document.body.scrollHeight);
+            tela.scrollTop = tela.scrollHeight;
         }
 
         async function iniciarConversa() {
@@ -135,7 +185,6 @@
             }
         }
 
-        // Inicia quando a página carregar
         window.addEventListener('load', iniciarConversa);
     </script>
 </body>
