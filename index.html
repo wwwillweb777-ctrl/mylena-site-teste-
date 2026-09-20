@@ -31,7 +31,7 @@
 
         .foto-perfil {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -47,27 +47,9 @@
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        .imagem-serginho {
-            text-align: center;
-            margin: 15px 0;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .imagem-serginho.visivel { opacity: 1; }
-
-        .imagem-serginho img {
-            max-width: 280px;
-            width: 80%;
-            height: auto;
-            border-radius: 8px;
-            border: none;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.25);
-        }
-
         .linha-nome {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             opacity: 0;
             transition: opacity 0.5s ease 0.1s;
         }
@@ -98,6 +80,7 @@
             font-size: 17px;
             line-height: 1.8;
             transition: opacity 0.3s ease;
+            margin-bottom: 15px;
         }
 
         .aparecer { animation: aparecer 0.6s forwards; }
@@ -107,6 +90,24 @@
         @keyframes desaparecer {
             from { opacity: 1; }
             to { opacity: 0; transform: translateY(-8px); }
+        }
+
+        .foto-assunto {
+            text-align: center;
+            margin: 10px 0 20px 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .foto-assunto.visivel { opacity: 1; }
+
+        .foto-assunto img {
+            max-width: 260px;
+            width: 75%;
+            height: auto;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 0 18px rgba(0, 255, 0, 0.3);
         }
 
         .cursor {
@@ -139,20 +140,22 @@
             }
         };
 
-        // ✅ Arquivo solto na raiz → caminho direto!
-        const imagemSerginho = 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste-@main/FaClubeSerginho_AFazenda18_Votar.png';
+        // ✅ Link direto — arquivo solto na raiz!
+        const fotosAssunto = {
+            serginho: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste-@main/serginho.png'
+        };
 
         const conversa = [
-            { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
-            { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
-            { quem: 'will', texto: 'Os vídeos do Fã Clube estão ganhando força! Precisamos alcançar mais gente.', pausa: 3500 },
-            { quem: 'troia', texto: 'Exatamente! O foco é o Serginho Cabeção. Ele merece todo o reconhecimento!', pausa: 3500, mostrarSerginho: true },
-            { quem: 'will', texto: 'Isso mesmo! Malhação, A Fazenda 18... ele marcou gerações inteiras.', pausa: 3500 },
-            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver o Serginho brilhar!', pausa: 3500, mostrarSerginho: true },
-            { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro.', pausa: 3000 },
+            { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem no Fã Clube?', pausa: 2800 },
+            { quem: 'troia', texto: 'Tudo firme, Will! Estamos de olho em tudo, inclusive no que estão fazendo contra nós.', pausa: 3000 },
+            { quem: 'will', texto: 'Percebi que tem gente espionando o Fã Clube. Precisamos tomar cuidado.', pausa: 3200 },
+            { quem: 'troia', texto: 'Exato! Mas o foco principal é o Serginho. Ele merece todo nosso apoio!', pausa: 3500, mostrarFoto: 'serginho' },
+            { quem: 'will', texto: 'Isso mesmo! Malhação, A Fazenda 18... o Serginho Cabeção marcou gerações!', pausa: 3500, mostrarFoto: 'serginho' },
+            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver ele brilhar de novo!', pausa: 3500, mostrarFoto: 'serginho' },
+            { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem deixar rastro.', pausa: 3000 },
             { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 3500 },
-            { quem: 'will', texto: 'Vamos juntos fortalecer a campanha pro Serginho ser campeão!', pausa: 3500, mostrarSerginho: true },
-            { quem: 'troia', texto: 'Isso! A gente FAZ acontecer! O Serginho merece! 🚀', pausa: 3800 },
+            { quem: 'will', texto: 'Vamos fortalecer a campanha pro Serginho ser reconhecido!', pausa: 3500, mostrarFoto: 'serginho' },
+            { quem: 'troia', texto: 'Isso! A gente FAZ acontecer! O Serginho merece! 🚀', pausa: 3800, mostrarFoto: 'serginho' },
             { quem: 'will', texto: 'Fechou, Tróia. Código limpo, coração firme. Vamos crescer!', pausa: 3500 },
             { quem: 'troia', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver!', pausa: 4000 },
         ];
@@ -177,11 +180,13 @@
 
             const p = perfis[item.quem];
 
+            // Foto do perfil
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `<img src="${p.foto}" alt="${p.nome}">`;
             tela.appendChild(divFoto);
 
+            // Nome: Will / Nome: Tróia
             const divNome = document.createElement('div');
             divNome.className = 'linha-nome';
             divNome.innerHTML = `
@@ -190,20 +195,22 @@
             `;
             tela.appendChild(divNome);
 
-            // ✅ Só aparece a imagem quando tem "mostrarSerginho: true"
-            if (item.mostrarSerginho) {
-                const divImg = document.createElement('div');
-                divImg.className = 'imagem-serginho';
-                divImg.innerHTML = `<img src="${imagemSerginho}" alt="Serginho Cabeção">`;
-                tela.appendChild(divImg);
-                setTimeout(() => divImg.classList.add('visivel'), 200);
-            }
-
+            // Texto da mensagem primeiro
             const divMsg = document.createElement('div');
             divMsg.className = 'linha';
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
+            // ✅ Foto do assunto DEPOIS da mensagem — só se for o caso
+            if (item.mostrarFoto && fotosAssunto[item.mostrarFoto]) {
+                const divFotoAssunto = document.createElement('div');
+                divFotoAssunto.className = 'foto-assunto';
+                divFotoAssunto.innerHTML = `<img src="${fotosAssunto[item.mostrarFoto]}" alt="${item.mostrarFoto}">`;
+                tela.appendChild(divFotoAssunto);
+                setTimeout(() => divFotoAssunto.classList.add('visivel'), 350);
+            }
+
+            // Ordem de aparecimento
             setTimeout(() => divFoto.classList.add('visivel'), 80);
             setTimeout(() => divNome.classList.add('visivel'), 150);
             setTimeout(() => divMsg.classList.add('aparecer'), 250);
