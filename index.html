@@ -44,7 +44,7 @@
             object-fit: cover;
             border-radius: 50%;
             border: none;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         .linha-nome {
@@ -128,9 +128,9 @@
             troia: { nome: 'Tróia', foto: 'troia.jpg' }
         };
 
-        // ✅ NOME DO ARQUIVO CONFIRMADO NO PRINT: serginho.png
+        // ✅ NOME COMPLETO DO USUÁRIO: wwwillweb777-ctrl
         const fotosAssunto = {
-            serginho: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste-@main/serginho.png'
+            serginho: 'https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/mylena-site-teste-@main/serginho.png'
         };
 
         const conversa = [
@@ -186,7 +186,7 @@
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
-            // ✅ FOTO DEPOIS DA MENSAGEM — só quando mencionar
+            // ✅ Foto DEPOIS da mensagem
             if (item.mostrarFoto && fotosAssunto[item.mostrarFoto]) {
                 const divFotoAssunto = document.createElement('div');
                 divFotoAssunto.className = 'foto-assunto';
