@@ -28,16 +28,12 @@
             max-width: 700px;
             min-height: 100vh;
             padding-bottom: 40vh;
-            color: #00FF00;
-            text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
-            font-size: 18px;
-            line-height: 1.8;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
         }
 
-        /* Foto no topo — menor, sem fundo */
+        /* Foto menor, sem fundo, no topo */
         .foto-perfil {
             text-align: center;
             margin-bottom: 20px;
@@ -55,11 +51,11 @@
             object-fit: cover;
             border-radius: 50%;
             border: none;
-            background: transparent;
+            display: inline-block;
             box-shadow: 0 0 12px rgba(0, 255, 0, 0.35);
         }
 
-        /* Nome com fonte especial e cor de suspense */
+        /* Nome com fonte especial e brilho */
         .nome-pessoa {
             margin-top: 8px;
             font-family: 'Fira Code', 'Courier New', monospace;
@@ -73,6 +69,10 @@
         .linha {
             opacity: 0;
             white-space: pre-wrap;
+            color: #00FF00;
+            text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
+            font-size: 18px;
+            line-height: 1.8;
             transition: opacity 0.3s ease;
         }
 
@@ -107,19 +107,13 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-
-        .mensagem {
-            color: #00FF00;
-        }
     </style>
 </head>
 <body>
-    <div class="tela-matrix" id="tela">
-        <!-- Foto + nome + mensagem aparecem aqui -->
-    </div>
+    <div class="tela-matrix" id="tela"></div>
 
     <script>
-        // ✅ Links diretos corretos — Will e Tróia
+        // ✅ LINKS DIRETOS RÁPIDOS — RAW = funciona como CDN
         const perfis = {
             will: {
                 nome: 'Will',
@@ -131,22 +125,21 @@
             }
         };
 
-        // 💬 Conversa: Will ↔ Tróia
         const conversa = [
             { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
             { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
-            { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando forma, mas precisam alcançar muito mais gente.', pausa: 3500 },
-            { quem: 'troia', texto: 'Exatamente! Não pode ficar escondido. Vamos organizar cada detalhe pra o sistema entregar.', pausa: 3200 },
-            { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho... é história que marcou gerações inteiras!', pausa: 3500 },
+            { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando força, mas precisam alcançar muito mais gente!', pausa: 3500 },
+            { quem: 'troia', texto: 'Exatamente! Não pode ficar escondido. Vamos organizar cada detalhe pro sistema entregar.', pausa: 3200 },
+            { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho Cabeção... é história que marcou gerações!', pausa: 3500 },
             { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar o caminho.', pausa: 3200 },
-            { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro de baixador.', pausa: 3000 },
+            { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro.', pausa: 3000 },
             { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto pra sempre.', pausa: 3500 },
             { quem: 'will', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3200 },
-            { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente sem forçar nada.', pausa: 3000 },
-            { quem: 'will', texto: 'Juntos, lado a lado, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
+            { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 3000 },
+            { quem: 'will', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
             { quem: 'troia', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 3800 },
             { quem: 'will', texto: 'Fechou, Tróia. Código limpo, coração firme. Vamos crescer!', pausa: 3500 },
-            { quem: 'troia', texto: 'Juntos. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
+            { quem: 'troia', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
         ];
 
         const tela = document.getElementById('tela');
@@ -167,34 +160,34 @@
         }
 
         async function trocarMensagem(item) {
-            // Apaga tudo suavemente
-            tela.classList.add('desaparecer');
+            // Apaga suavemente
+            tela.style.opacity = '0';
             await new Promise(r => setTimeout(r, 400));
             tela.innerHTML = '';
-            tela.classList.remove('desaparecer');
+            tela.style.opacity = '1';
 
             const pessoa = perfis[item.quem];
 
-            // Foto menor, sem fundo, no topo
+            // Foto + nome aparecendo no topo ANTES do texto
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `
-                <img src="${pessoa.foto}" alt="${pessoa.nome}" onerror="this.style.display='none'">
+                <img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy">
                 <div class="nome-pessoa">${pessoa.nome}</div>
             `;
             tela.appendChild(divFoto);
 
-            // Mensagem
+            // Área da mensagem
             const divMsg = document.createElement('div');
             divMsg.className = 'linha';
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
-            // Aparece a foto primeiro
-            setTimeout(() => divFoto.classList.add('visivel'), 80);
-            setTimeout(() => divMsg.classList.add('aparecer'), 150);
+            // Foto aparece primeiro → depois o texto começa
+            setTimeout(() => divFoto.classList.add('visivel'), 100);
+            setTimeout(() => divMsg.classList.add('aparecer'), 200);
 
-            // Digita o texto
+            // Digita letra por letra
             const spanTexto = divMsg.querySelector('.mensagem');
             await digitarTexto(spanTexto, item.texto);
             divMsg.querySelector('.cursor').style.display = 'none';
