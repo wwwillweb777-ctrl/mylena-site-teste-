@@ -17,28 +17,29 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding: 40px 60px 120px; /* ↑ cima 40px (~10cm) | ←→ lados 60px (~10cm cada) | ↓ baixo 120px = sobe ~30cm */
+            padding: 40px 60px 120px;
             font-family: 'Courier New', Courier, monospace;
         }
 
-        /* Área de tela — SEM bordas verdes laterais, mais larga e posicionada */
         .tela-matrix {
             width: 100%;
-            max-width: 700px; /* Mais largo = +10cm cada lado */
-            height: 75vh; /* Sobe a parte de baixo */
-            background-color: #000;
-            padding: 10px 0;
-            overflow-y: auto;
+            max-width: 700px;
+            min-height: 100vh;
+            padding-top: 0;
+            padding-bottom: 40vh; /* ← Para sempre nos 40% de baixo = nunca desce até o fim */
             color: #00FF00;
             text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
             font-size: 18px;
             line-height: 1.8;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* ← Sempre alinha de baixo pra cima */
         }
 
         .linha {
             opacity: 0;
-            margin-bottom: 10px;
             white-space: pre-wrap;
+            transition: opacity 0.3s ease;
         }
 
         .aparecer {
@@ -47,6 +48,15 @@
 
         @keyframes aparecer {
             to { opacity: 1; }
+        }
+
+        .desaparecer {
+            animation: desaparecer 0.4s forwards;
+        }
+
+        @keyframes desaparecer {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateY(-10px); }
         }
 
         .cursor {
@@ -72,41 +82,33 @@
         .mensagem {
             color: #00FF00;
         }
-
-        /* Remove barra de rolagem feia */
-        .tela-matrix::-webkit-scrollbar {
-            width: 4px;
-        }
-        .tela-matrix::-webkit-scrollbar-thumb {
-            background: #004400;
-            border-radius: 2px;
-        }
     </style>
 </head>
 <body>
     <div class="tela-matrix" id="tela">
-        <!-- As linhas vão sendo inseridas aqui pelo JS -->
+        <!-- Apenas uma mensagem por vez aqui -->
     </div>
 
     <script>
         const conversa = [
-            { nome: 'dev_01', texto: 'E aí, parceiro? Tudo firme?', pausa: 1200 },
-            { nome: 'dev_02', texto: 'Tudo certo! Estou de olho nos vídeos do Fã Clube...', pausa: 1500 },
-            { nome: 'dev_01', texto: 'O conteúdo está lindo, mas precisa chegar pra MUITO mais gente.', pausa: 1400 },
-            { nome: 'dev_02', texto: 'Exato! Não pode ficar escondido. Temos que fazer o sistema entregar.', pausa: 1600 },
-            { nome: 'dev_01', texto: 'Malhação, A Fazenda 18, Serginho Cabeção... é história que marca.', pausa: 1500 },
-            { nome: 'dev_02', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar.', pausa: 1400 },
-            { nome: 'dev_01', texto: 'Então vamos organizar: nomes limpos, sem lixo, sem rastro.', pausa: 1300 },
-            { nome: 'dev_02', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 1600 },
-            { nome: 'dev_01', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 1500 },
-            { nome: 'dev_02', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 1400 },
-            { nome: 'dev_01', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões.', pausa: 1500 },
-            { nome: 'dev_02', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 1800 },
-            { nome: 'dev_01', texto: 'Fechou. Código limpo, coração firme. Vamos crescer!', pausa: 1600 },
-            { nome: 'dev_02', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 2000 },
+            { nome: 'dev_01', texto: 'E aí, parceiro? Tudo firme?', pausa: 2500 },
+            { nome: 'dev_02', texto: 'Tudo certo! Estou de olho nos vídeos do Fã Clube...', pausa: 2800 },
+            { nome: 'dev_01', texto: 'O conteúdo está lindo, mas precisa chegar pra MUITO mais gente.', pausa: 3000 },
+            { nome: 'dev_02', texto: 'Exato! Não pode ficar escondido. Temos que fazer o sistema entregar.', pausa: 3000 },
+            { nome: 'dev_01', texto: 'Malhação, A Fazenda 18, Serginho Cabeção... é história que marca.', pausa: 3000 },
+            { nome: 'dev_02', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar.', pausa: 3000 },
+            { nome: 'dev_01', texto: 'Então vamos organizar: nomes limpos, sem lixo, sem rastro.', pausa: 2800 },
+            { nome: 'dev_02', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 3000 },
+            { nome: 'dev_01', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3000 },
+            { nome: 'dev_02', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 2800 },
+            { nome: 'dev_01', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões.', pausa: 3000 },
+            { nome: 'dev_02', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 3500 },
+            { nome: 'dev_01', texto: 'Fechou. Código limpo, coração firme. Vamos crescer!', pausa: 3000 },
+            { nome: 'dev_02', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
         ];
 
         const tela = document.getElementById('tela');
+        let mensagemAtual = null;
 
         function digitarTexto(elemento, texto, velocidade = 35) {
             return new Promise(resolver => {
@@ -123,6 +125,18 @@
             });
         }
 
+        async function trocarMensagem(novaMensagemFn) {
+            // Se tem mensagem anterior → faz sumir
+            if (mensagemAtual) {
+                mensagemAtual.classList.add('desaparecer');
+                await new Promise(r => setTimeout(r, 400));
+                tela.innerHTML = '';
+            }
+
+            // Mostra a nova mensagem
+            mensagemAtual = await novaMensagemFn();
+        }
+
         async function mostrarLinha(item) {
             const div = document.createElement('div');
             div.className = 'linha';
@@ -135,12 +149,12 @@
             await digitarTexto(spanTexto, item.texto);
             
             div.querySelector('.cursor').style.display = 'none';
-            tela.scrollTop = tela.scrollHeight;
+            return div;
         }
 
         async function iniciarConversa() {
             for (const item of conversa) {
-                await mostrarLinha(item);
+                await trocarMensagem(() => mostrarLinha(item));
                 await new Promise(r => setTimeout(r, item.pausa));
             }
         }
