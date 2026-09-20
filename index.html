@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will ↔ Tróia — Conversa</title>
     <style>
-        /* Fonte para a palavra "Nome:" */
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap');
-        /* Fonte diferente para os nomes */
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,6 +47,25 @@
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
+        /* Imagem do Serginho — proporcional, sem exagerar */
+        .imagem-serginho {
+            text-align: center;
+            margin: 15px 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .imagem-serginho.visivel { opacity: 1; }
+
+        .imagem-serginho img {
+            max-width: 280px;
+            width: 80%;
+            height: auto;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.25);
+        }
+
         .linha-nome {
             text-align: center;
             margin-bottom: 12px;
@@ -58,7 +75,6 @@
 
         .linha-nome.visivel { opacity: 1; }
 
-        /* "Nome:" — vermelho, fonte 1 */
         .etiqueta-nome {
             font-family: 'Roboto Mono', monospace;
             font-size: 16px;
@@ -66,13 +82,12 @@
             text-shadow: 0 0 6px #ff3333, 0 0 12px #ff0000;
         }
 
-        /* Nome — branco, fonte 2, mais fina */
         .valor-nome {
             font-family: 'Fira Code', monospace;
             font-size: 16px;
             font-weight: 300;
             color: #ffffff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+            text-shadow: 0 0 5px rgba(255,255,255,0.6);
             margin-left: 4px;
         }
 
@@ -125,21 +140,23 @@
             }
         };
 
+        // ✅ Imagem do Serginho — link direto CDN
+        const imagemSerginho = 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste@main/FaClubeSerginho_AFazenda18_Votar.png';
+
+        // 💬 Conversa — mostra a imagem quando menciona o Serginho
         const conversa = [
             { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
             { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
-            { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando força!', pausa: 3500 },
-            { quem: 'troia', texto: 'Exatamente! Não pode ficar escondido. Vamos organizar cada detalhe pro sistema entregar.', pausa: 3200 },
-            { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho... é história que marcou gerações!', pausa: 3500 },
-            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar o caminho.', pausa: 3200 },
+            { quem: 'will', texto: 'Os vídeos do Fã Clube estão ganhando força! Precisamos alcançar mais gente.', pausa: 3500 },
+            { quem: 'troia', texto: 'Exatamente! O foco é o Serginho Cabeção. Ele merece todo o reconhecimento!', pausa: 3500, mostrarSerginho: true },
+            { quem: 'will', texto: 'Isso mesmo! Malhação, A Fazenda 18... ele marcou gerações inteiras.', pausa: 3500 },
+            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver o Serginho brilhar!', pausa: 3500, mostrarSerginho: true },
             { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro.', pausa: 3000 },
-            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto pra sempre.', pausa: 3500 },
-            { quem: 'will', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3200 },
-            { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente sem forçar nada.', pausa: 3000 },
-            { quem: 'will', texto: 'Juntos, lado a lado, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
-            { quem: 'troia', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 3800 },
+            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 3500 },
+            { quem: 'will', texto: 'Vamos juntos fortalecer a campanha pro Serginho ser campeão!', pausa: 3500, mostrarSerginho: true },
+            { quem: 'troia', texto: 'Isso! A gente FAZ acontecer! O Serginho merece! 🚀', pausa: 3800 },
             { quem: 'will', texto: 'Fechou, Tróia. Código limpo, coração firme. Vamos crescer!', pausa: 3500 },
-            { quem: 'troia', texto: 'Juntos. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
+            { quem: 'troia', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver!', pausa: 4000 },
         ];
 
         const tela = document.getElementById('tela');
@@ -162,13 +179,13 @@
 
             const p = perfis[item.quem];
 
-            // Foto
+            // Foto do perfil
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `<img src="${p.foto}" alt="${p.nome}">`;
             tela.appendChild(divFoto);
 
-            // Linha: Nome: Will — vermelho + branco, fontes diferentes
+            // Nome: Will / Nome: Tróia
             const divNome = document.createElement('div');
             divNome.className = 'linha-nome';
             divNome.innerHTML = `
@@ -176,6 +193,15 @@
                 <span class="valor-nome">${p.nome}</span>
             `;
             tela.appendChild(divNome);
+
+            // Imagem do Serginho — só aparece quando a mensagem pede ✅
+            if (item.mostrarSerginho) {
+                const divImg = document.createElement('div');
+                divImg.className = 'imagem-serginho';
+                divImg.innerHTML = `<img src="${imagemSerginho}" alt="Serginho Cabeção">`;
+                tela.appendChild(divImg);
+                setTimeout(() => divImg.classList.add('visivel'), 200);
+            }
 
             // Texto da mensagem
             const divMsg = document.createElement('div');
