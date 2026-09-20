@@ -7,11 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: #000;
@@ -19,7 +15,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding: 30px 60px 120px;
+            padding: 30px 40px 120px;
             font-family: 'Courier New', Courier, monospace;
         }
 
@@ -40,9 +36,7 @@
             transition: opacity 0.5s ease;
         }
 
-        .foto-perfil.visivel {
-            opacity: 1;
-        }
+        .foto-perfil.visivel { opacity: 1; }
 
         .foto-perfil img {
             width: 90px;
@@ -50,13 +44,12 @@
             object-fit: cover;
             border-radius: 50%;
             border: none;
-            display: inline-block;
             box-shadow: 0 0 12px rgba(0, 255, 0, 0.35);
         }
 
         .nome-pessoa {
             margin-top: 8px;
-            font-family: 'Fira Code', 'Courier New', monospace;
+            font-family: 'Fira Code', monospace;
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 2px;
@@ -66,7 +59,6 @@
 
         .linha {
             opacity: 0;
-            white-space: pre-wrap;
             color: #00FF00;
             text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
             font-size: 18px;
@@ -74,18 +66,10 @@
             transition: opacity 0.3s ease;
         }
 
-        .aparecer {
-            animation: aparecer 0.6s forwards;
-        }
+        .aparecer { animation: aparecer 0.6s forwards; }
+        @keyframes aparecer { to { opacity: 1; } }
 
-        @keyframes aparecer {
-            to { opacity: 1; }
-        }
-
-        .desaparecer {
-            animation: desaparecer 0.4s forwards;
-        }
-
+        .desaparecer { animation: desaparecer 0.4s forwards; }
         @keyframes desaparecer {
             from { opacity: 1; }
             to { opacity: 0; transform: translateY(-10px); }
@@ -95,14 +79,13 @@
             display: inline-block;
             width: 10px;
             height: 20px;
-            background-color: #00FF00;
+            background: #00FF00;
             animation: piscar 0.7s infinite;
             vertical-align: middle;
             margin-left: 2px;
         }
-
         @keyframes piscar {
-            0%, 100% { opacity: 1; }
+            0%,100% { opacity: 1; }
             50% { opacity: 0; }
         }
     </style>
@@ -111,27 +94,27 @@
     <div class="tela-matrix" id="tela"></div>
 
     <script>
-        // ✅ LINKS CDN JSDelivr — DIRETOS E RÁPIDOS ⚡
+        // ✅ DIRETO — IGUAL SITE COMUM! As fotos estão na mesma pasta ✅
         const perfis = {
             will: {
                 nome: 'Will',
-                foto: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste@main/full.jpg'
+                foto: 'full.jpg'        // ← simples assim!
             },
             troia: {
                 nome: 'Tróia',
-                foto: 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste@main/troia.jpg'
+                foto: 'troia.jpg'       // ← simples assim!
             }
         };
 
         const conversa = [
             { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
             { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
-            { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando força, mas precisam alcançar muito mais gente!', pausa: 3500 },
-            { quem: 'troia', texto: 'Exatamente! Não pode ficar escondido. Vamos organizar cada detalhe pro sistema entregar.', pausa: 3200 },
-            { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho Cabeção... é história que marcou gerações!', pausa: 3500 },
-            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar o caminho.', pausa: 3200 },
+            { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando força!', pausa: 3500 },
+            { quem: 'troia', texto: 'Exatamente! Vamos organizar cada detalhe pro sistema entregar.', pausa: 3200 },
+            { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho... é história que marcou gerações!', pausa: 3500 },
+            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar.', pausa: 3200 },
             { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro.', pausa: 3000 },
-            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto pra sempre.', pausa: 3500 },
+            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 3500 },
             { quem: 'will', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3200 },
             { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 3000 },
             { quem: 'will', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
@@ -142,18 +125,13 @@
 
         const tela = document.getElementById('tela');
 
-        function digitarTexto(elemento, texto, velocidade = 35) {
-            return new Promise(resolver => {
-                let i = 0;
+        function digitarTexto(el, texto, vel=35) {
+            return new Promise(res => {
+                let i=0;
                 const intervalo = setInterval(() => {
-                    if (i < texto.length) {
-                        elemento.innerHTML += texto[i];
-                        i++;
-                    } else {
-                        clearInterval(intervalo);
-                        resolver();
-                    }
-                }, velocidade);
+                    if(i<texto.length) { el.innerHTML += texto[i++]; }
+                    else { clearInterval(intervalo); res(); }
+                }, vel);
             });
         }
 
@@ -163,13 +141,13 @@
             tela.innerHTML = '';
             tela.style.opacity = '1';
 
-            const pessoa = perfis[item.quem];
+            const p = perfis[item.quem];
 
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
             divFoto.innerHTML = `
-                <img src="${pessoa.foto}" alt="${pessoa.nome}" loading="lazy">
-                <div class="nome-pessoa">${pessoa.nome}</div>
+                <img src="${p.foto}" alt="${p.nome}">
+                <div class="nome-pessoa">${p.nome}</div>
             `;
             tela.appendChild(divFoto);
 
@@ -181,19 +159,18 @@
             setTimeout(() => divFoto.classList.add('visivel'), 100);
             setTimeout(() => divMsg.classList.add('aparecer'), 200);
 
-            const spanTexto = divMsg.querySelector('.mensagem');
-            await digitarTexto(spanTexto, item.texto);
+            await digitarTexto(divMsg.querySelector('.mensagem'), item.texto);
             divMsg.querySelector('.cursor').style.display = 'none';
         }
 
-        async function iniciarConversa() {
-            for (const item of conversa) {
+        async function iniciar() {
+            for(const item of conversa) {
                 await trocarMensagem(item);
                 await new Promise(r => setTimeout(r, item.pausa));
             }
         }
 
-        window.addEventListener('load', iniciarConversa);
+        window.addEventListener('load', iniciar);
     </script>
 </body>
 </html>
