@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will ↔ Tróia — Conversa</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -16,7 +16,7 @@
             align-items: flex-start;
             justify-content: center;
             padding: 30px 40px 120px;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Fira Code', 'Courier New', monospace;
         }
 
         .tela-matrix {
@@ -31,7 +31,7 @@
 
         .foto-perfil {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -39,29 +39,37 @@
         .foto-perfil.visivel { opacity: 1; }
 
         .foto-perfil img {
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             object-fit: cover;
             border-radius: 50%;
             border: none;
-            box-shadow: 0 0 12px rgba(0, 255, 0, 0.35);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
+        .nome-linha {
+            text-align: center;
+            margin-bottom: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.1s;
+        }
+
+        .nome-linha.visivel { opacity: 1; }
+
         .nome-pessoa {
-            margin-top: 8px;
             font-family: 'Fira Code', monospace;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #00FF66;
-            text-shadow: 0 0 8px #00FF66, 0 0 20px #00FF66;
+            font-size: 16px;          /* ← MENOR */
+            font-weight: 300;         /* ← MAIS FINO */
+            letter-spacing: 1px;
+            color: #88ffaa;
+            text-shadow: 0 0 6px #88ffaa, 0 0 12px #44ff88;
         }
 
         .linha {
             opacity: 0;
             color: #00FF00;
             text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
-            font-size: 18px;
+            font-size: 17px;
             line-height: 1.8;
             transition: opacity 0.3s ease;
         }
@@ -72,13 +80,13 @@
         .desaparecer { animation: desaparecer 0.4s forwards; }
         @keyframes desaparecer {
             from { opacity: 1; }
-            to { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 0; transform: translateY(-8px); }
         }
 
         .cursor {
             display: inline-block;
-            width: 10px;
-            height: 20px;
+            width: 9px;
+            height: 19px;
             background: #00FF00;
             animation: piscar 0.7s infinite;
             vertical-align: middle;
@@ -94,15 +102,14 @@
     <div class="tela-matrix" id="tela"></div>
 
     <script>
-        // ✅ DIRETO — IGUAL SITE COMUM! As fotos estão na mesma pasta ✅
         const perfis = {
             will: {
                 nome: 'Will',
-                foto: 'full.jpg'        // ← simples assim!
+                foto: 'full.jpg'
             },
             troia: {
                 nome: 'Tróia',
-                foto: 'troia.jpg'       // ← simples assim!
+                foto: 'troia.jpg'
             }
         };
 
@@ -110,26 +117,26 @@
             { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
             { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
             { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando força!', pausa: 3500 },
-            { quem: 'troia', texto: 'Exatamente! Vamos organizar cada detalhe pro sistema entregar.', pausa: 3200 },
+            { quem: 'troia', texto: 'Exatamente! Não pode ficar escondido. Vamos organizar cada detalhe pro sistema entregar.', pausa: 3200 },
             { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho... é história que marcou gerações!', pausa: 3500 },
-            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar.', pausa: 3200 },
+            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar o caminho.', pausa: 3200 },
             { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro.', pausa: 3000 },
-            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 3500 },
+            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto pra sempre.', pausa: 3500 },
             { quem: 'will', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3200 },
-            { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 3000 },
-            { quem: 'will', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
+            { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente sem forçar nada.', pausa: 3000 },
+            { quem: 'will', texto: 'Juntos, lado a lado, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
             { quem: 'troia', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 3800 },
             { quem: 'will', texto: 'Fechou, Tróia. Código limpo, coração firme. Vamos crescer!', pausa: 3500 },
-            { quem: 'troia', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
+            { quem: 'troia', texto: 'Juntos. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
         ];
 
         const tela = document.getElementById('tela');
 
         function digitarTexto(el, texto, vel=35) {
             return new Promise(res => {
-                let i=0;
+                let i = 0;
                 const intervalo = setInterval(() => {
-                    if(i<texto.length) { el.innerHTML += texto[i++]; }
+                    if (i < texto.length) { el.innerHTML += texto[i++]; }
                     else { clearInterval(intervalo); res(); }
                 }, vel);
             });
@@ -143,28 +150,35 @@
 
             const p = perfis[item.quem];
 
+            // Foto
             const divFoto = document.createElement('div');
             divFoto.className = 'foto-perfil';
-            divFoto.innerHTML = `
-                <img src="${p.foto}" alt="${p.nome}">
-                <div class="nome-pessoa">${p.nome}</div>
-            `;
+            divFoto.innerHTML = `<img src="${p.foto}" alt="${p.nome}">`;
             tela.appendChild(divFoto);
 
+            // Nome no formato: Will: — mais fino e menor
+            const divNome = document.createElement('div');
+            divNome.className = 'nome-linha';
+            divNome.innerHTML = `<span class="nome-pessoa">${p.nome}:</span>`;
+            tela.appendChild(divNome);
+
+            // Texto da mensagem
             const divMsg = document.createElement('div');
             divMsg.className = 'linha';
             divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
             tela.appendChild(divMsg);
 
-            setTimeout(() => divFoto.classList.add('visivel'), 100);
-            setTimeout(() => divMsg.classList.add('aparecer'), 200);
+            // Aparece em ordem: foto → nome → texto
+            setTimeout(() => divFoto.classList.add('visivel'), 80);
+            setTimeout(() => divNome.classList.add('visivel'), 150);
+            setTimeout(() => divMsg.classList.add('aparecer'), 250);
 
             await digitarTexto(divMsg.querySelector('.mensagem'), item.texto);
             divMsg.querySelector('.cursor').style.display = 'none';
         }
 
         async function iniciar() {
-            for(const item of conversa) {
+            for (const item of conversa) {
                 await trocarMensagem(item);
                 await new Promise(r => setTimeout(r, item.pausa));
             }
