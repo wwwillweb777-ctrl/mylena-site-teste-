@@ -139,7 +139,7 @@
             }
         };
 
-        // ✅ CAMINHO CORRIGIDO — com o hífen no final da pasta!
+        // ✅ Arquivo solto na raiz → caminho direto!
         const imagemSerginho = 'https://cdn.jsdelivr.net/gh/wwwillweb777/mylena-site-teste-@main/FaClubeSerginho_AFazenda18_Votar.png';
 
         const conversa = [
@@ -190,7 +190,7 @@
             `;
             tela.appendChild(divNome);
 
-            // ✅ Só aparece quando mencionar o Serginho
+            // ✅ Só aparece a imagem quando tem "mostrarSerginho: true"
             if (item.mostrarSerginho) {
                 const divImg = document.createElement('div');
                 divImg.className = 'imagem-serginho';
