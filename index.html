@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversa Devs — Fã Clube Serginho Cabeção</title>
+    <title>Will ↔ Tróia — Conversa</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -17,7 +19,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding: 40px 60px 120px;
+            padding: 30px 60px 120px;
             font-family: 'Courier New', Courier, monospace;
         }
 
@@ -25,15 +27,47 @@
             width: 100%;
             max-width: 700px;
             min-height: 100vh;
-            padding-top: 0;
-            padding-bottom: 40vh; /* ← Para sempre nos 40% de baixo = nunca desce até o fim */
+            padding-bottom: 40vh;
             color: #00FF00;
             text-shadow: 0 0 6px #00FF00, 0 0 12px #00FF00;
             font-size: 18px;
             line-height: 1.8;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* ← Sempre alinha de baixo pra cima */
+            justify-content: flex-end;
+        }
+
+        /* Foto no topo — menor, sem fundo */
+        .foto-perfil {
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .foto-perfil.visivel {
+            opacity: 1;
+        }
+
+        .foto-perfil img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.35);
+        }
+
+        /* Nome com fonte especial e cor de suspense */
+        .nome-pessoa {
+            margin-top: 8px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #00FF66;
+            text-shadow: 0 0 8px #00FF66, 0 0 20px #00FF66;
         }
 
         .linha {
@@ -74,11 +108,6 @@
             50% { opacity: 0; }
         }
 
-        .nome {
-            font-weight: bold;
-            color: #88FF88;
-        }
-
         .mensagem {
             color: #00FF00;
         }
@@ -86,29 +115,41 @@
 </head>
 <body>
     <div class="tela-matrix" id="tela">
-        <!-- Apenas uma mensagem por vez aqui -->
+        <!-- Foto + nome + mensagem aparecem aqui -->
     </div>
 
     <script>
+        // ✅ Links diretos corretos — Will e Tróia
+        const perfis = {
+            will: {
+                nome: 'Will',
+                foto: 'https://raw.githubusercontent.com/wwwillweb777/mylena-site-teste-/main/full.jpg'
+            },
+            troia: {
+                nome: 'Tróia',
+                foto: 'https://raw.githubusercontent.com/wwwillweb777/mylena-site-teste-/main/troia.jpg'
+            }
+        };
+
+        // 💬 Conversa: Will ↔ Tróia
         const conversa = [
-            { nome: 'dev_01', texto: 'E aí, parceiro? Tudo firme?', pausa: 2500 },
-            { nome: 'dev_02', texto: 'Tudo certo! Estou de olho nos vídeos do Fã Clube...', pausa: 2800 },
-            { nome: 'dev_01', texto: 'O conteúdo está lindo, mas precisa chegar pra MUITO mais gente.', pausa: 3000 },
-            { nome: 'dev_02', texto: 'Exato! Não pode ficar escondido. Temos que fazer o sistema entregar.', pausa: 3000 },
-            { nome: 'dev_01', texto: 'Malhação, A Fazenda 18, Serginho Cabeção... é história que marca.', pausa: 3000 },
-            { nome: 'dev_02', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar.', pausa: 3000 },
-            { nome: 'dev_01', texto: 'Então vamos organizar: nomes limpos, sem lixo, sem rastro.', pausa: 2800 },
-            { nome: 'dev_02', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto.', pausa: 3000 },
-            { nome: 'dev_01', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3000 },
-            { nome: 'dev_02', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente.', pausa: 2800 },
-            { nome: 'dev_01', texto: 'Juntos, cada um fazendo a parte certa, alcança milhões.', pausa: 3000 },
-            { nome: 'dev_02', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 3500 },
-            { nome: 'dev_01', texto: 'Fechou. Código limpo, coração firme. Vamos crescer!', pausa: 3000 },
-            { nome: 'dev_02', texto: 'Lado a lado. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
+            { quem: 'will', texto: 'E aí Tróia, tudo bem? Tudo em ordem?', pausa: 2800 },
+            { quem: 'troia', texto: 'Tudo firme, Will! Tô de olho em tudo que estamos construindo.', pausa: 3000 },
+            { quem: 'will', texto: 'Os vídeos do Fã Clube do Serginho Cabeção estão ganhando forma, mas precisam alcançar muito mais gente.', pausa: 3500 },
+            { quem: 'troia', texto: 'Exatamente! Não pode ficar escondido. Vamos organizar cada detalhe pra o sistema entregar.', pausa: 3200 },
+            { quem: 'will', texto: 'Malhação, A Fazenda 18, Serginho... é história que marcou gerações inteiras!', pausa: 3500 },
+            { quem: 'troia', texto: 'A nostalgia é forte demais. O público quer ver, só precisa encontrar o caminho.', pausa: 3200 },
+            { quem: 'will', texto: 'Então vamos fazer certo: nomes limpos, sem lixo, sem rastro de baixador.', pausa: 3000 },
+            { quem: 'troia', texto: 'Cada arquivo com o nome da página! Quem baixa, leva a marca junto pra sempre.', pausa: 3500 },
+            { quem: 'will', texto: 'Postar com calma, espaçado, um de cada vez. Deixar o sistema respirar.', pausa: 3200 },
+            { quem: 'troia', texto: 'Assim o algoritmo confia. Entrega mais, cresce naturalmente sem forçar nada.', pausa: 3000 },
+            { quem: 'will', texto: 'Juntos, lado a lado, cada um fazendo a parte certa, alcança milhões!', pausa: 3200 },
+            { quem: 'troia', texto: 'Serginho merece. O público merece. A gente FAZ acontecer! 🚀', pausa: 3800 },
+            { quem: 'will', texto: 'Fechou, Tróia. Código limpo, coração firme. Vamos crescer!', pausa: 3500 },
+            { quem: 'troia', texto: 'Juntos. Fã Clube crescendo pra todo Brasil ver.', pausa: 4000 },
         ];
 
         const tela = document.getElementById('tela');
-        let mensagemAtual = null;
 
         function digitarTexto(elemento, texto, velocidade = 35) {
             return new Promise(resolver => {
@@ -125,36 +166,43 @@
             });
         }
 
-        async function trocarMensagem(novaMensagemFn) {
-            // Se tem mensagem anterior → faz sumir
-            if (mensagemAtual) {
-                mensagemAtual.classList.add('desaparecer');
-                await new Promise(r => setTimeout(r, 400));
-                tela.innerHTML = '';
-            }
+        async function trocarMensagem(item) {
+            // Apaga tudo suavemente
+            tela.classList.add('desaparecer');
+            await new Promise(r => setTimeout(r, 400));
+            tela.innerHTML = '';
+            tela.classList.remove('desaparecer');
 
-            // Mostra a nova mensagem
-            mensagemAtual = await novaMensagemFn();
-        }
+            const pessoa = perfis[item.quem];
 
-        async function mostrarLinha(item) {
-            const div = document.createElement('div');
-            div.className = 'linha';
-            div.innerHTML = `<span class="nome">${item.nome}:</span> <span class="mensagem"></span><span class="cursor">|</span>`;
-            tela.appendChild(div);
-            
-            setTimeout(() => div.classList.add('aparecer'), 50);
-            
-            const spanTexto = div.querySelector('.mensagem');
+            // Foto menor, sem fundo, no topo
+            const divFoto = document.createElement('div');
+            divFoto.className = 'foto-perfil';
+            divFoto.innerHTML = `
+                <img src="${pessoa.foto}" alt="${pessoa.nome}" onerror="this.style.display='none'">
+                <div class="nome-pessoa">${pessoa.nome}</div>
+            `;
+            tela.appendChild(divFoto);
+
+            // Mensagem
+            const divMsg = document.createElement('div');
+            divMsg.className = 'linha';
+            divMsg.innerHTML = `<span class="mensagem"></span><span class="cursor">|</span>`;
+            tela.appendChild(divMsg);
+
+            // Aparece a foto primeiro
+            setTimeout(() => divFoto.classList.add('visivel'), 80);
+            setTimeout(() => divMsg.classList.add('aparecer'), 150);
+
+            // Digita o texto
+            const spanTexto = divMsg.querySelector('.mensagem');
             await digitarTexto(spanTexto, item.texto);
-            
-            div.querySelector('.cursor').style.display = 'none';
-            return div;
+            divMsg.querySelector('.cursor').style.display = 'none';
         }
 
         async function iniciarConversa() {
             for (const item of conversa) {
-                await trocarMensagem(() => mostrarLinha(item));
+                await trocarMensagem(item);
                 await new Promise(r => setTimeout(r, item.pausa));
             }
         }
