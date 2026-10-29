@@ -14,5 +14,9 @@ const firebaseConfig = {
 };
 
 // SENHA DA ÁREA ADMINISTRATIVA
-// ALTERE A SENHA ABAIXO PARA UMA QUE VOCÊ ESCOLHER
 const SENHA_ADMIN = "WJ321";
+
+// INICIALIZA O FIREBASE
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
