@@ -204,7 +204,7 @@
             <div id="mural" class="bloco">
                 <h3>✍️ Mural de Fãs</h3>
                 <p>Sua mensagem será lida por todos que visitarem este espaço.</p>
-                <a href="mensagensapoio.html" class="botao-mural">💪 Deixar Minha Mensagem</a>
+                <a href="mensagens_dos_fas.html" class="botao-mural">💪 Deixar Minha Mensagem</a>
             </div>
 
             <div class="bloco" style="text-align: center; background: #2a1a0f; border: 2px solid #ff3333;">
@@ -235,9 +235,6 @@
                 abrirMenu();
             }
 
-// ╔════════════════════════════════════════════════════════════╗
-// ║           INÍCIO DO CÓDIGO DE PROTEÇÃO DE VISITAS           ║
-// ╚════════════════════════════════════════════════════════════╝
             if (!sessionStorage.getItem('jaContouVisita')) {
                 sessionStorage.setItem('jaContouVisita', 'sim');
                 
@@ -250,9 +247,6 @@
                     console.error('Erro:', erro);
                 }
             }
-// ╔════════════════════════════════════════════════════════════╗
-// ║              FIM DO CÓDIGO DE PROTEÇÃO DE VISITAS           ║
-// ╚════════════════════════════════════════════════════════════╝
 
             carregarVisualizacoes();
         };
