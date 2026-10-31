@@ -61,16 +61,16 @@
             padding: 0.9rem 1rem;
             margin-bottom: 0.7rem;
             width: 100%;
-            overflow-x: auto; /* ✅ Se for MUITO pequeno, permite rolar horizontal */
+            overflow-x: auto;
         }
         .pix-chave {
             color: #000000;
-            font-size: 0.85rem; /* ✅ Um pouquinho maior e legível */
+            font-size: 0.85rem;
             font-weight: 700;
             font-family: 'Segoe UI', 'Roboto Mono', monospace;
             text-align: center;
-            white-space: nowrap; /* ✅ NUNCA quebra a linha */
-            word-break: keep-all; /* ✅ Mantém tudo junto */
+            white-space: nowrap;
+            word-break: keep-all;
             overflow-wrap: normal;
             user-select: text;
             -webkit-user-select: text;
@@ -144,7 +144,7 @@
     <div class="caixa">
         <p><strong>Queridos fãs,</strong></p>
 
-        <p>A presença de cada um aqui já é muito importante. Cada visualização, cada compartilhamento e cada palavra de apoio fortalece a nossa torcida pelo Serginho.</p>
+        <p>A presença de cada um de vocês importa. Cada visualização, cada compartilhamento e cada palavra de apoio fortalece a torcida pelo Serginho, o nosso campeão.</p>
 
         <div class="pix-container">
             <div class="pix-label">Chave Pix 👇</div>
@@ -155,22 +155,14 @@
             <div class="mensagem-copiado" id="mensagemCopiadoTop">✅ COPIADO!</div>
         </div>
 
-        <p>Mas para continuar crescendo e fazendo mais, o Fã Clube também precisa de recursos. Com a sua contribuição, será possível criar novas dinâmicas, desenvolver ferramentas melhores, contratar serviços de qualidade e investir em tecnologia para apoiar o Serginho cada vez melhor. O Serginho é o centro de tudo — o Fã Clube e os fãs existem para estar ao lado dele. Quando nos unimos por ele, todos crescem juntos.</p>
+        <p>Para continuar crescendo, o Fã Clube precisa de ajuda financeira. Com a sua contribuição, será possível criar novas dinâmicas, desenvolver ferramentas melhores, contratar serviços de qualidade e investir em tecnologia para apoiar o Serginho cada vez melhor.</p>
 
-        <p>Qualquer valor faz uma diferença enorme e ajuda diretamente a manter esse trabalho ativo. Acredita-se que juntos podemos fazer muito mais do que separados.</p>
-
-        <p>Se puder ajudar, desde já o nosso muito obrigado! Se não puder agora, sem problema nenhum — a sua presença já é o nosso maior motivo para continuar apoiando ele.</p>
+        <p>Por menor que seja o valor da contribuição, não deixa de ser ajuda! Se puder ajudar, copie a chave Pix e faça a sua doação. Desde já o nosso muito obrigado!</p>
 
         <hr class="divisor">
 
-        <div class="pix-container">
-            <div class="pix-label">Chave Pix 👇</div>
-            <div class="pix-chave-wrapper">
-                <div class="pix-chave" id="chavePixBottom">faclubedoserginhocabecao@gmail.com</div>
-            </div>
-            <button class="botao-copiar" onclick="copiarPixBottom()">📋 COPIAR</button>
-            <div class="mensagem-copiado" id="mensagemCopiadoBottom">✅ COPIADO!</div>
-        </div>
+        <p style="text-align: center; font-size: 1.1rem; margin-top: 0.5rem; color: #f4a900;">Tamo junto!</p>
+        <p style="text-align: center; font-size: 1.1rem;">Somos todos Serginho Cabeção.<br>Somos a geração dos anos 90 e 2000.<br>Somos Malhação, com muito orgulho! 💚🐸👑</p>
         
         <div class="versiculo">
             <p>"Lança o teu pão sobre as águas, porque depois de muitos dias o acharás."</p>
@@ -185,7 +177,7 @@
             copiarTexto(document.getElementById('chavePixTop').textContent.trim(), 'mensagemCopiadoTop');
         }
         function copiarPixBottom() {
-            copiarTexto(document.getElementById('chavePixBottom').textContent.trim(), 'mensagemCopiadoBottom');
+            copiarTexto(document.getElementById('chavePixTop').textContent.trim(), 'mensagemCopiadoTop');
         }
 
         function copiarTexto(texto, msgId) {
