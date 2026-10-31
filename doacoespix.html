@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doações Pix — Fã Clube Serginho Cabeção</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 1.5rem;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .cabecalho {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .coracoes {
+            color: #ff0000;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        h1 {
+            color: #f4a900;
+            font-size: 1.6rem;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .caixa {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 2rem;
+            border: 5px solid #f4a900;
+        }
+        .caixa p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 1.2rem;
+        }
+        .pix-container {
+            background: #111;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 3px solid #39ff14;
+        }
+        .pix-label {
+            color: #39ff14;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+        }
+        .pix-chave-wrapper {
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 0.7rem;
+            width: 100%;
+            overflow-x: auto; /* ✅ Se for MUITO pequeno, permite rolar horizontal */
+        }
+        .pix-chave {
+            color: #000000;
+            font-size: 0.85rem; /* ✅ Um pouquinho maior e legível */
+            font-weight: 700;
+            font-family: 'Segoe UI', 'Roboto Mono', monospace;
+            text-align: center;
+            white-space: nowrap; /* ✅ NUNCA quebra a linha */
+            word-break: keep-all; /* ✅ Mantém tudo junto */
+            overflow-wrap: normal;
+            user-select: text;
+            -webkit-user-select: text;
+            cursor: text;
+            display: block;
+        }
+        .botao-copiar {
+            background: #39ff14;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .botao-copiar:active {
+            background: #2cd610;
+        }
+        .mensagem-copiado {
+            display: none;
+            color: #39ff14;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .versiculo {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+        .versiculo p {
+            font-style: italic;
+            color: #f4a900;
+        }
+        .referencia {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+        button.voltar {
+            display: inline-block;
+            color: #f4a900;
+            background: transparent;
+            border: 3px solid #f4a900;
+            padding: 0.8rem 2rem;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+        button.voltar:active {
+            background: #f4a900;
+            color: #000;
+        }
+        .divisor {
+            border: none;
+            border-top: 1px dashed #444;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cabecalho">
+        <div class="coracoes">❤️ ❤️ ❤️</div>
+        <h1>Apoio ao Fã Clube</h1>
+    </div>
+    
+    <div class="caixa">
+        <p><strong>Queridos fãs,</strong></p>
+
+        <p>A presença de cada um aqui já é muito importante. Cada visualização, cada compartilhamento e cada palavra de apoio fortalece a nossa torcida pelo Serginho.</p>
+
+        <div class="pix-container">
+            <div class="pix-label">Chave Pix 👇</div>
+            <div class="pix-chave-wrapper">
+                <div class="pix-chave" id="chavePixTop">faclubedoserginhocabecao@gmail.com</div>
+            </div>
+            <button class="botao-copiar" onclick="copiarPixTop()">📋 COPIAR</button>
+            <div class="mensagem-copiado" id="mensagemCopiadoTop">✅ COPIADO!</div>
+        </div>
+
+        <p>Mas para continuar crescendo e fazendo mais, o Fã Clube também precisa de recursos. Com a sua contribuição, será possível criar novas dinâmicas, desenvolver ferramentas melhores, contratar serviços de qualidade e investir em tecnologia para apoiar o Serginho cada vez melhor. O Serginho é o centro de tudo — o Fã Clube e os fãs existem para estar ao lado dele. Quando nos unimos por ele, todos crescem juntos.</p>
+
+        <p>Qualquer valor faz uma diferença enorme e ajuda diretamente a manter esse trabalho ativo. Acredita-se que juntos podemos fazer muito mais do que separados.</p>
+
+        <p>Se puder ajudar, desde já o nosso muito obrigado! Se não puder agora, sem problema nenhum — a sua presença já é o nosso maior motivo para continuar apoiando ele.</p>
+
+        <hr class="divisor">
+
+        <div class="pix-container">
+            <div class="pix-label">Chave Pix 👇</div>
+            <div class="pix-chave-wrapper">
+                <div class="pix-chave" id="chavePixBottom">faclubedoserginhocabecao@gmail.com</div>
+            </div>
+            <button class="botao-copiar" onclick="copiarPixBottom()">📋 COPIAR</button>
+            <div class="mensagem-copiado" id="mensagemCopiadoBottom">✅ COPIADO!</div>
+        </div>
+        
+        <div class="versiculo">
+            <p>"Lança o teu pão sobre as águas, porque depois de muitos dias o acharás."</p>
+            <p class="referencia">— Eclesiastes 11:1 📖</p>
+        </div>
+        
+        <button onclick="window.history.back()" class="voltar">← Voltar</button>
+    </div>
+
+    <script>
+        function copiarPixTop() {
+            copiarTexto(document.getElementById('chavePixTop').textContent.trim(), 'mensagemCopiadoTop');
+        }
+        function copiarPixBottom() {
+            copiarTexto(document.getElementById('chavePixBottom').textContent.trim(), 'mensagemCopiadoBottom');
+        }
+
+        function copiarTexto(texto, msgId) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(texto)
+                    .then(() => {
+                        const msg = document.getElementById(msgId);
+                        msg.style.display = 'inline-block';
+                        setTimeout(() => { msg.style.display = 'none'; }, 2000);
+                    })
+                    .catch(() => fallbackCopiar(texto, msgId));
+            } else {
+                fallbackCopiar(texto, msgId);
+            }
+        }
+
+        function fallbackCopiar(texto, msgId) {
+            const input = document.createElement('input');
+            input.value = texto;
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.select();
+            input.setSelectionRange(0, 99999);
+
+            try {
+                const sucesso = document.execCommand('copy');
+                if (sucesso) {
+                    const msg = document.getElementById(msgId);
+                    msg.style.display = 'inline-block';
+                    setTimeout(() => { msg.style.display = 'none'; }, 2000);
+                } else {
+                    alert('Não foi possível copiar. Selecione o texto da chave e copie manualmente.');
+                }
+            } catch (err) {
+                alert('Não foi possível copiar. Selecione o texto da chave e copie manualmente.');
+            }
+
+            document.body.removeChild(input);
+        }
+    </script>
+</body>
+</html>
