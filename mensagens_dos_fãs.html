@@ -18,11 +18,11 @@
             height: 100%;
             background: #000;
             font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
+            overflow: auto;
         }
         .tela-completa {
             width: 100%;
-            height: 100%;
+            min-height: 100%;
             border: 4px solid #ffd700;
             padding: 0.8rem 1rem 1rem;
             display: flex;
@@ -54,6 +54,58 @@
             font-size: 0.9rem;
             line-height: 1.4;
         }
+        
+        /* 🎬 ÁREA DO VÍDEO */
+        .container-video {
+            max-width: 640px;
+            margin: 0 auto 1.2rem;
+            padding: 1rem;
+            background: #1a1a1a;
+            border-radius: 12px;
+            border: 2px solid #ffd700;
+            flex-shrink: 0;
+        }
+        .titulo-video {
+            color: #ffd700;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        video {
+            width: 100%;
+            border-radius: 8px;
+            background: #000;
+        }
+        .botoes-volume {
+            margin-top: 0.8rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            align-items: center;
+        }
+        .botoes-volume button {
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-menos {
+            background: #e74c3c;
+            color: white;
+        }
+        .btn-mais {
+            background: #27ae60;
+            color: white;
+        }
+        .nivel-volume {
+            color: white;
+            font-size: 0.9rem;
+            min-width: 50px;
+            text-align: center;
+        }
+        
         .area-mensagens {
             flex: 1;
             background: #111;
@@ -62,7 +114,7 @@
             padding: 1rem;
             overflow-y: auto;
             margin-bottom: 0.8rem;
-            min-height: 0;
+            min-height: 300px;
         }
         .area-mensagens h3 {
             color: #ffd700;
@@ -145,7 +197,22 @@
             <p class="descricao">Veja todas as mensagens de apoio enviadas aqui 💛</p>
         </div>
 
+        <!-- 🎬 VÍDEO FIXADO NO TOPO -->
+        <div class="container-video">
+            <h3 class="titulo-video">🎥 Conheça o Serginho!</h3>
+            <video id="meuVideo" controls>
+                <source src="videos/will_programador.mp4" type="video/mp4">
+                Seu navegador não suporta reproduzir vídeos.
+            </video>
+            <div class="botoes-volume">
+                <button class="btn-menos" onclick="diminuirVolume()">🔉 −</button>
+                <span class="nivel-volume" id="nivelVolume">50%</span>
+                <button class="btn-mais" onclick="aumentarVolume()">🔊 +</button>
+            </div>
+        </div>
+
         <div class="area-mensagens">
+            <h3>💬 Mensagens Recebidas</h3>
             <div id="listaMensagens">
                 <p class="sem-mensagens">Carregando mensagens...</p>
             </div>
@@ -155,10 +222,33 @@
     </div>
 
     <script>
+        // Inicializar Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.database();
+
+        // 🎵 Controles de Volume do Vídeo
+        const video = document.getElementById('meuVideo');
+        video.volume = 0.5; // Volume inicial 50%
+
+        function aumentarVolume() {
+            if (video.volume < 1) {
+                video.volume = Math.min(1, video.volume + 0.1);
+                atualizarMostradorVolume();
+            }
+        }
+
+        function diminuirVolume() {
+            if (video.volume > 0) {
+                video.volume = Math.max(0, video.volume - 0.1);
+                atualizarMostradorVolume();
+            }
+        }
+
+        function atualizarMostradorVolume() {
+            document.getElementById('nivelVolume').textContent = Math.round(video.volume * 100) + '%';
+        }
 
         function voltarPagina() {
             window.history.back();
