@@ -17,7 +17,7 @@
         }
         .cabecalho {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         .coracoes {
             color: #ff0000;
@@ -133,12 +133,63 @@
             border-top: 1px dashed #444;
             margin: 2rem 0;
         }
+        /* === ESTILO DO PLAYER === */
+        .player-mensagem {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #39ff14;
+            margin: 0.5rem 0 1rem;
+        }
+        .player-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .player-btn {
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease;
+        }
+        .player-btn:active {
+            transform: scale(0.92);
+        }
+        .btn-volume {
+            width: 42px;
+            height: 42px;
+            font-size: 18px;
+            background: #39ff14;
+            color: #000;
+            font-weight: bold;
+        }
+        .btn-play {
+            width: 58px;
+            height: 58px;
+            font-size: 22px;
+            background: #f4a900;
+            color: #000;
+        }
     </style>
 </head>
 <body>
     <div class="cabecalho">
         <div class="coracoes">❤️ ❤️ ❤️</div>
         <h1>Apoio ao Fã Clube</h1>
+        
+        <!-- 🎵 PLAYER DE ÁUDIO — LOGO ABAIXO DO TÍTULO -->
+        <p class="player-mensagem">🔊 Clique no Play e escute o áudio</p>
+        <div class="player-container">
+            <button class="player-btn btn-volume" onclick="ajustarVolume(-0.1)">−</button>
+            <button class="player-btn btn-play" id="botaoPlay" onclick="tocarAudio()">▶</button>
+            <button class="player-btn btn-volume" onclick="ajustarVolume(0.1)">+</button>
+        </div>
+        <audio id="audio" src="tropadoserginho.mp3">
+        <!-- FIM DO PLAYER -->
     </div>
     
     <div class="caixa">
@@ -173,25 +224,25 @@
     </div>
 
     <script>
-        function copiarPixTop() {
-            copiarTexto(document.getElementById('chavePixTop').textContent.trim(), 'mensagemCopiadoTop');
-        }
-        function copiarPixBottom() {
-            copiarTexto(document.getElementById('chavePixTop').textContent.trim(), 'mensagemCopiadoTop');
+        const audio = document.getElementById('audio');
+        const botaoPlay = document.getElementById('botaoPlay');
+
+        function tocarAudio() {
+            if (audio.paused) {
+                audio.play();
+                botaoPlay.innerHTML = '⏸';
+            } else {
+                audio.pause();
+                botaoPlay.innerHTML = '▶';
+            }
         }
 
-        function copiarTexto(texto, msgId) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(texto)
-                    .then(() => {
-                        const msg = document.getElementById(msgId);
-                        msg.style.display = 'inline-block';
-                        setTimeout(() => { msg.style.display = 'none'; }, 2000);
-                    })
-                    .catch(() => fallbackCopiar(texto, msgId));
-            } else {
-                fallbackCopiar(texto, msgId);
-            }
+        function ajustarVolume(delta) {
+            audio.volume = Math.max(0, Math.min(1, audio.volume + delta));
+        }
+
+        function copiarPixTop() {
+            copiarTexto(document.getElementById('chavePixTop').textContent.trim(), 'mensagemCopiadoTop');
         }
 
         function fallbackCopiar(texto, msgId) {
@@ -217,6 +268,20 @@
             }
 
             document.body.removeChild(input);
+        }
+
+        function copiarTexto(texto, msgId) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(texto)
+                    .then(() => {
+                        const msg = document.getElementById(msgId);
+                        msg.style.display = 'inline-block';
+                        setTimeout(() => { msg.style.display = 'none'; }, 2000);
+                    })
+                    .catch(() => fallbackCopiar(texto, msgId));
+            } else {
+                fallbackCopiar(texto, msgId);
+            }
         }
     </script>
 </body>
