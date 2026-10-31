@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens dos Fãs 💛</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+        .tela-completa {
+            width: 100%;
+            height: 100%;
+            border: 4px solid #ffd700;
+            padding: 0.8rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+        }
+        .cabecalho {
+            text-align: center;
+            padding: 0.3rem 0 0.8rem;
+            flex-shrink: 0;
+        }
+        .titulo-com-icone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+        .icone {
+            font-size: 2rem;
+            line-height: 1;
+        }
+        h1 {
+            color: #ffd700;
+            font-size: 1.4rem;
+        }
+        .descricao {
+            color: #ddd;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .area-mensagens {
+            flex: 1;
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 1rem;
+            overflow-y: auto;
+            margin-bottom: 0.8rem;
+            min-height: 0;
+        }
+        .area-mensagens h3 {
+            color: #ffd700;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+        .mensagem-item {
+            background: #222;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 0.7rem;
+            color: #eee;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            border-left: 3px solid #ffd700;
+        }
+        .mensagem-item .quem {
+            font-size: 0.8rem;
+            color: #ffd700;
+            margin-bottom: 0.4rem;
+        }
+        .mensagem-texto {
+            margin-bottom: 0.5rem;
+        }
+        .resposta-publica {
+            background: #1a2e1a;
+            border-left: 3px solid #39ff14;
+            padding: 0.7rem;
+            margin-top: 0.7rem;
+            border-radius: 6px;
+        }
+        .resposta-titulo {
+            color: #39ff14;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        .resposta-texto {
+            color: #90ee90;
+            font-size: 0.9rem;
+        }
+        .sem-mensagens {
+            color: #666;
+            text-align: center;
+            padding: 3rem 1rem;
+            font-size: 0.95rem;
+        }
+        button.voltar {
+            width: 100%;
+            background: transparent;
+            border: 3px solid #ffd700;
+            color: #ffd700;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        button.voltar:active {
+            background: rgba(255, 215, 0, 0.1);
+        }
+        .area-mensagens::-webkit-scrollbar {
+            width: 6px;
+        }
+        .area-mensagens::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tela-completa">
+        <div class="cabecalho">
+            <div class="titulo-com-icone">
+                <span class="icone">📢</span>
+                <h1>Mensagens dos Fãs</h1>
+            </div>
+            <p class="descricao">Veja todas as mensagens de apoio enviadas aqui 💛</p>
+        </div>
+
+        <div class="area-mensagens">
+            <div id="listaMensagens">
+                <p class="sem-mensagens">Carregando mensagens...</p>
+            </div>
+        </div>
+
+        <button class="voltar" onclick="voltarPagina()">⬅️ Voltar para Enviar Mensagem</button>
+    </div>
+
+    <script>
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        function voltarPagina() {
+            window.history.back();
+        }
+
+        function carregarMensagens() {
+            const lista = document.getElementById('listaMensagens');
+            db.ref("MensagensApoio").limitToLast(50).on("value", (snapshot) => {
+                lista.innerHTML = '';
+                const dados = snapshot.val();
+                
+                if (!dados) {
+                    lista.innerHTML = '<p class="sem-mensagens">Ainda não há mensagens. Seja o primeiro a apoiar! 💪</p>';
+                    return;
+                }
+
+                const itens = Object.entries(dados).reverse();
+                itens.forEach(([chave, mensagem]) => {
+                    const div = document.createElement('div');
+                    div.className = 'mensagem-item';
+                    
+                    let respostaHTML = '';
+                    if (mensagem.resposta) {
+                        respostaHTML = `
+                            <div class="resposta-publica">
+                                <div class="resposta-titulo">🌟 Resposta oficial:</div>
+                                <div class="resposta-texto">${mensagem.resposta}
+                                    <div style="font-size:0.75rem; color:#7ccd7c; margin-top:0.3rem;">🕒 ${mensagem.dataResposta || ''}</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    div.innerHTML = `
+                        <div class="quem">
+                            👤 ${mensagem.nome || 'Anônimo'} — 🌐 ${mensagem.rede || 'Não informado'} — ${mensagem.arroba || ''}
+                            <br><span style="font-size:0.7rem; color:#777;">🕒 ${mensagem.horario || ''}</span>
+                        </div>
+                        <div class="mensagem-texto">${mensagem.texto}</div>
+                        ${respostaHTML}
+                    `;
+                    lista.appendChild(div);
+                });
+            });
+        }
+
+        window.onload = carregarMensagens;
+    </script>
+</body>
+</html>
